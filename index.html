@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Objects & Methods</title>
+    <style>
+      body,
+      button {
+        font-family: "Times New Roman", serif;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .tabs {
+        display: flex;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+        height: 50px;
+        position: relative;
+        align-items: center;
+        padding-left: 10px;
+      }
+      .tabs > span {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px; /* Reduced from 60px */
+        height: 28px; /* Reduced from 34px */
+        right: 10px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 28px; /* Adjusted to match new height */
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 22px;
+        width: 22px;
+        left: 3px;
+        bottom: 3px;
+        background-color: black;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: white;
+      }
+      input:focus + .slider {
+        box-shadow: 0 0 0 white;
+      }
+      input:checked + .slider:before {
+        transform: translateX(22px);
+      }
+      .tab-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+      .row {
+        border-bottom: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-grow: 1;
+        max-height: calc((100vh - 50px) / 5); /* Adjusted for 5 rows */
+        overflow: hidden;
+      }
+      .column,
+      .colleft,
+      .colright {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .col1,
+      .col2,
+      .col3,
+      .col5 {
+        flex: 1;
+      }
+      .col4 {
+        flex: 3;
+      }
+      .colleft {
+        flex: 1;
+      }
+      .colright {
+        flex: 7;
+      }
+      img {
+        max-width: 100%;
+        max-height: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+    </style>
+
+    <script src="https://apis.google.com/js/api.js"></script>
+  </head>
+  <body onload="loadSheetsApi()">
+    <div class="tabs">
+      <span>Objects & Methods Fall 2024</span>
+      <label class="switch">
+        <input type="checkbox" id="rowToggle" onclick="toggleRows()" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div id="tab1" class="tab-content"></div>
+
+    <script>
+      let dataForFiveRows = null;
+      let dataForSixteenRows = null;
+
+      function loadSheetsApi() {
+        gapi.load("client", initializeSheetsApi);
+      }
+
+      function initializeSheetsApi() {
+        gapi.client
+          .init({
+            apiKey: "AIzaSyAHxCjDdEoQFLEySe1j-KQBV-fIoTiIhGM",
+            discoveryDocs: [
+              "https://sheets.googleapis.com/$discovery/rest?version=v4",
+            ],
+          })
+          .then(function () {
+            fetchAllData();
+          });
+      }
+
+      function fetchAllData() {
+        getSpreadsheetData(true, function (data) {
+          dataForFiveRows = data;
+          populateRows(dataForFiveRows, true);
+          adjustRowHeight();
+        });
+        getSpreadsheetData(false, function (data) {
+          dataForSixteenRows = data;
+        });
+      }
+
+      function getSpreadsheetData(isFiveRows, callback) {
+        var range = isFiveRows ? "Sheet1!B3:F7" : "Sheet1!H3:I18";
+        gapi.client.sheets.spreadsheets.values
+          .get({
+            spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
+            range: range,
+          })
+          .then(
+            function (response) {
+              var values = response.result.values;
+              if (values.length > 0) {
+                callback(values);
+              } else {
+                console.log("No data found.");
+              }
+            },
+            function (response) {
+              console.log("Error: " + response.result.error.message);
+            }
+          );
+      }
+
+      function toggleRows() {
+        var isFiveRows = document.getElementById("rowToggle").checked;
+        populateRows(
+          isFiveRows ? dataForFiveRows : dataForSixteenRows,
+          isFiveRows
+        );
+        adjustRowHeight();
+      }
+
+      function populateRows(data, isFiveRows) {
+        const tabContent = document.getElementById("tab1");
+        tabContent.innerHTML = "";
+        data.forEach((row, index) => {
+          const divRow = document.createElement("div");
+          divRow.className = "row";
+          row.forEach((value, colIndex) => {
+            const divCol = document.createElement("div");
+            divCol.className = isFiveRows
+              ? "column col" + (colIndex + 1)
+              : colIndex === 0
+              ? "colleft"
+              : "colright";
+            if (colIndex === 0 && value.startsWith("http") && isFiveRows) {
+              const img = document.createElement("img");
+              img.src = value;
+              divCol.appendChild(img);
+            } else {
+              divCol.textContent = value;
+            }
+            divRow.appendChild(divCol);
+          });
+          tabContent.appendChild(divRow);
+        });
+      }
+
+      function adjustRowHeight() {
+        const isFiveRows = document.getElementById("rowToggle").checked;
+        const numberOfRows = isFiveRows ? 5 : 16;
+        const rowElements = document.querySelectorAll(".row");
+        const rowHeight = `calc((100vh - 50px) / ${numberOfRows})`;
+        rowElements.forEach((row) => {
+          row.style.maxHeight = rowHeight;
+        });
+      }
+    </script>
+  </body>
+</html>
