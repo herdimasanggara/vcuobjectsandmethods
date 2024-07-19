@@ -140,6 +140,9 @@
             white-space: nowrap;
         }
         @media (max-width: 768px) {
+          body {
+            overflow: scroll;
+          }
             .title-container {
                 left: 50%;
                 transform: translateX(-50%);
@@ -154,11 +157,9 @@
             }
             .row .column {
                 display: none;
-                overflow: scroll;
             }
             .row .col2, .row .col4 {
                 display: flex;
-                overflow: scroll;
             }
         }
     </style>
