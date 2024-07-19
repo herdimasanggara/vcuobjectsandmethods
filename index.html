@@ -88,7 +88,7 @@
             flex-direction: column;
             flex-grow: 1;
             overflow: hidden;
-            height: calc(100vh - 70px); /* Fixed height calculation */
+            height: calc(100% - 70px); /* Fixed height calculation */
         }
         .row {
             border-bottom: 1px solid black;
@@ -286,9 +286,9 @@
         const isChecked = document.getElementById('dialogueToggle').checked;
         const numberOfRows = isChecked ? 16 : 5;
         const rowElements = document.querySelectorAll(".row");
-        const rowHeight = `calc((100vh - 70px) / ${numberOfRows})`;
+        const rowHeight = `calc((100% - 70px) / ${numberOfRows})`;
         rowElements.forEach((row) => {
-          row.style.maxHeight = rowHeight;
+          row.style.height = rowHeight;
         });
       }
 
@@ -324,6 +324,8 @@
         loadSheetsApi();
         applyRandomFontToTitle();
         applyRandomFontToLabels();
+        window.addEventListener('resize', adjustRowHeight);
+        adjustRowHeight();
       }
     </script>
 </body>
