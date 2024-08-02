@@ -61,7 +61,7 @@
         appearance: none;
         width: 40px;
         height: 20px;
-        background-color: #ccc;
+        background-color: yellow;
         border-radius: 10px;
         position: relative;
         outline: none;
@@ -86,7 +86,7 @@
         transform: translateX(20px);
       }
       .checkbox:hover {
-        background-color: #fff;
+        background-color: yellow;
       }
       .checkbox:checked:hover {
         background-color: #fff;
@@ -158,10 +158,15 @@
         transform: translateX(-50%);
         white-space: nowrap;
         text-align: center;
+        color: yellow;
+      }
+      .toggle-label {
+        color: yellow;
       }
       @media (max-width: 768px) {
         body {
-          overflow: scroll;
+          overflow-y: scroll;
+          overflow-x: none;
         }
         .title-container {
           left: 50%;
@@ -181,6 +186,7 @@
         .row .col2,
         .row .col4 {
           display: flex;
+          padding: 10px;
         }
       }
     </style>
