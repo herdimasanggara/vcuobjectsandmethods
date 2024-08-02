@@ -1,189 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="A public lecture series that focuses on expansive conversations around design practices.">
+    <meta property="og:image" content="meta-image.jpg">
+    <meta property="og:url" content="https://objectsandmethods.com/">
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"> -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <!-- <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"> -->
     <title>Objects + Methods</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Georgia&family=Arial&family=Verdana&family=Lucida+Handwriting&display=swap">
     <style>
-        body, button {
-            font-family: "Times New Roman", serif;
-        }
+      body,
+      button {
+        font-family: "Times New Roman", serif;
+      }
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .tabs {
+        display: flex;
+        background-color: black;
+        color: white;
+        overflow: hidden;
+        height: 70px;
+        align-items: center;
+        padding: 0 10px;
+        position: relative;
+      }
+      .tabs > span {
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        justify-content: center;
+        white-space: nowrap;
+      }
+      .toggle-container {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        right: 10px;
+        cursor: pointer;
+      }
+      .toggle-label {
+        margin-right: 10px;
+        user-select: none;
+        display: flex;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      .checkbox {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 40px;
+        height: 20px;
+        background-color: #ccc;
+        border-radius: 10px;
+        position: relative;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+      }
+      .checkbox:checked {
+        background-color: #e8e8e8;
+      }
+      .checkbox:before {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background-color: #000;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+      }
+      .checkbox:checked:before {
+        transform: translateX(20px);
+      }
+      .checkbox:hover {
+        background-color: #fff;
+      }
+      .checkbox:checked:hover {
+        background-color: #fff;
+      }
+      .tab-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        overflow: hidden;
+        height: calc(100% - 70px);
+      }
+      .row {
+        border-bottom: 1px solid black;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        flex-grow: 1;
+        overflow: hidden;
+      }
+      .column,
+      .colleft,
+      .colright {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-right: 5px;
+      }
+      .col1,
+      .col2,
+      .col3,
+      .col5 {
+        flex: 1;
+      }
+      .col4 {
+        flex: 3;
+      }
+      .colleft {
+        flex: 1;
+      }
+      .colright {
+        flex: 9;
+      }
+      img {
+        max-width: 100%;
+        height: 100%;
+        object-fit: contain;
+        position: relative;
+      }
+      .preview-container {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 70vw;
+        height: 70vh;
+        z-index: 5;
+        text-align: center;
+      }
+      .caption {
+        font-size: 12px;
+        color: #333;
+        margin-top: 5px;
+      }
+      .title-container {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        white-space: nowrap;
+        text-align: center;
+      }
+      @media (max-width: 768px) {
         body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        .tabs {
-            display: flex;
-            background-color: black;
-            color: white;
-            overflow: hidden;
-            height: 70px;
-            align-items: center;
-            padding: 0 10px;
-            position: relative;
-        }
-        .tabs > span {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-            justify-content: center;
-            white-space: nowrap;
-        }
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            position: absolute;
-            right: 10px;
-            cursor: pointer;
-        }
-        .toggle-label {
-            margin-right: 10px;
-            user-select: none;
-            display: flex;
-            font-size: 16px;
-            line-height: 1.5;
-        }
-        .checkbox {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 40px;
-            height: 20px;
-            background-color: #ccc;
-            border-radius: 10px;
-            position: relative;
-            outline: none;
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-        .checkbox:checked {
-            background-color: #e8e8e8;
-        }
-        .checkbox:before {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 16px;
-            height: 16px;
-            background-color: #000;
-            border-radius: 50%;
-            transition: transform 0.2s ease;
-        }
-        .checkbox:checked:before {
-            transform: translateX(20px);
-        }
-        .checkbox:hover {
-            background-color: #fff;
-        }
-        .checkbox:checked:hover {
-            background-color: #fff;
-        }
-        .tab-content {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            overflow: hidden;
-            height: calc(100% - 70px);
-        }
-        .row {
-            border-bottom: 1px solid black;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            flex-grow: 1;
-            overflow: hidden;
-        }
-        .column, .colleft, .colright {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding-right: 5px;
-        }
-        .col1, .col2, .col3, .col5 {
-            flex: 1;
-        }
-        .col4 {
-            flex: 3;
-        }
-        .colleft {
-            flex: 1;
-        }
-        .colright {
-            flex: 9;
-        }
-        img {
-            max-width: 100%;
-            height: 100%;
-            object-fit: contain;
-            position: relative;
-        }
-        .preview {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70vw;
-            height: 70vh;
-            z-index: 5;
+          overflow: scroll;
         }
         .title-container {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
+          left: 50%;
+          transform: translateX(-50%);
+          white-space: normal;
+          text-align: center;
         }
-        @media (max-width: 768px) {
-          body {
-            overflow: scroll;
-          }
-            .title-container {
-                left: 50%;
-                transform: translateX(-50%);
-                white-space: normal;
-                text-align: center;
-            }
-            .tabs {
-                justify-content: center;
-            }
-            .toggle-container {
-                display: none;
-            }
-            .row .column {
-                display: none;
-            }
-            .row .col2, .row .col4 {
-                display: flex;
-            }
+        .tabs {
+          justify-content: center;
         }
+        .toggle-container {
+          display: none;
+        }
+        .row .column {
+          display: none;
+        }
+        .row .col2,
+        .row .col4 {
+          display: flex;
+        }
+      }
     </style>
     <script src="https://apis.google.com/js/api.js"></script>
-</head>
-<body onload="loadSheetsApi()">
+  </head>
+  <body>
     <div class="tabs">
-        <div class="title-container">
-            <span id="title">Objects + Methods Fall 2024</span>
-        </div>
-        <div class="toggle-container" onclick="toggleRows()">
-            <span id="toggleLabel" class="toggle-label">without Dialogues</span>
-            <input type="checkbox" id="dialogueToggle" class="checkbox">
-        </div>
+      <div class="title-container">
+        <span id="title">Objects + Methods Fall 2024</span>
+      </div>
+      <div class="toggle-container" onclick="toggleRows()">
+        <span id="toggleLabel" class="toggle-label">without Dialogues</span>
+        <input type="checkbox" id="dialogueToggle" class="checkbox" />
+      </div>
     </div>
     <div id="tab1" class="tab-content"></div>
-    <img id="imgPreview" class="preview" />
+    <div id="previewContainer" class="preview-container">
+      <img id="imgPreview" class="preview" />
+      <div id="imgCaption" class="caption"></div>
+    </div>
 
     <script>
       let dataForFiveRows = null;
       let dataForSixteenRows = null;
+      let captionsForFiveRows = null;
+      let captionsForSixteenRows = null;
       let bgColorsWithoutDialogues = [];
       let bgColorsWithDialogues = [];
-      const fonts = ["'Times New Roman', serif", "'Georgia', serif", "'Arial', sans-serif", "'Verdana', sans-serif", "'Lucida Handwriting', cursive"];
+      const fonts = [
+        "'Times New Roman', serif",
+        "'Georgia', serif",
+        "'Arial', sans-serif",
+        "'Verdana', sans-serif",
+        "'Lucida Handwriting', cursive",
+      ];
 
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
@@ -206,19 +237,27 @@
         getSpreadsheetData(true, function (data) {
           dataForFiveRows = data.values;
           bgColorsWithoutDialogues = data.bgColors;
-          populateRows(dataForFiveRows, bgColorsWithoutDialogues, true);
+          captionsForFiveRows = data.captions;
+          populateRows(
+            dataForFiveRows,
+            bgColorsWithoutDialogues,
+            captionsForFiveRows,
+            true
+          );
           adjustRowHeight();
         });
         getSpreadsheetData(false, function (data) {
           dataForSixteenRows = data.values;
           bgColorsWithDialogues = data.bgColors;
+          captionsForSixteenRows = data.captions;
         });
       }
 
       function getSpreadsheetData(isFiveRows, callback) {
-        var range = isFiveRows ? "Sheet1!B3:F7" : "Sheet1!I3:M18";
-        var bgColorRange = isFiveRows ? "Sheet1!G3:G7" : "Sheet1!N3:N18";
-        
+        var range = isFiveRows ? "Sheet1!B3:F8" : "Sheet1!B23:F39";
+        var bgColorRange = isFiveRows ? "Sheet1!G3:G8" : "Sheet1!G23:G39";
+        var captionRange = isFiveRows ? "Sheet1!H3:H8" : "Sheet1!H23:H39";
+
         Promise.all([
           gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
@@ -227,38 +266,52 @@
           gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
             range: bgColorRange,
+          }),
+          gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
+            range: captionRange,
+          }),
+        ])
+          .then((responses) => {
+            const valuesResponse = responses[0];
+            const bgColorsResponse = responses[1];
+            const captionsResponse = responses[2];
+
+            const values = valuesResponse.result.values;
+            const bgColors = bgColorsResponse.result.values.map(
+              (row) => row[0]
+            );
+            const captions = captionsResponse.result.values.map(
+              (row) => row[0]
+            );
+
+            if (values.length > 0) {
+              callback({ values, bgColors, captions });
+            } else {
+              console.log("No data found.");
+            }
           })
-        ]).then((responses) => {
-          const valuesResponse = responses[0];
-          const bgColorsResponse = responses[1];
-          
-          const values = valuesResponse.result.values;
-          const bgColors = bgColorsResponse.result.values.map(row => row[0]);
-          
-          if (values.length > 0) {
-            callback({ values, bgColors });
-          } else {
-            console.log("No data found.");
-          }
-        }).catch((error) => {
-          console.log("Error: " + error.result.error.message);
-        });
+          .catch((error) => {
+            console.log("Error: " + error.result.error.message);
+          });
       }
 
       function toggleRows() {
-        const isChecked = document.getElementById('dialogueToggle').checked;
+        const isChecked = document.getElementById("dialogueToggle").checked;
         const isFiveRows = !isChecked;
-        const labelText = isChecked ? 'with Dialogues' : 'without Dialogues';
-        document.getElementById('toggleLabel').innerHTML = randomizeFont(labelText);
+        const labelText = isChecked ? "with Dialogues" : "without Dialogues";
+        document.getElementById("toggleLabel").innerHTML =
+          randomizeFont(labelText);
         populateRows(
           isFiveRows ? dataForFiveRows : dataForSixteenRows,
           isFiveRows ? bgColorsWithoutDialogues : bgColorsWithDialogues,
+          isFiveRows ? captionsForFiveRows : captionsForSixteenRows,
           isFiveRows
         );
         adjustRowHeight();
       }
 
-      function populateRows(data, bgColors, isFiveRows) {
+      function populateRows(data, bgColors, captions, isFiveRows) {
         const tabContent = document.getElementById("tab1");
         tabContent.innerHTML = "";
         data.forEach((row, index) => {
@@ -273,11 +326,11 @@
             if (colIndex === 0 && value.startsWith("http")) {
               const img = document.createElement("img");
               img.src = value;
-              img.onmouseover = () => showPreview(img.src);
+              img.onmouseover = () => showPreview(img.src, captions[index]);
               img.onmouseout = hidePreview;
               divCol.appendChild(img);
             } else {
-              divCol.innerHTML = randomizeFont(value);
+              divCol.innerHTML = applyRandomFontToLines(value);
             }
             divRow.appendChild(divCol);
           });
@@ -286,7 +339,7 @@
       }
 
       function adjustRowHeight() {
-        const isChecked = document.getElementById('dialogueToggle').checked;
+        const isChecked = document.getElementById("dialogueToggle").checked;
         const numberOfRows = isChecked ? 16 : 5;
         const rowElements = document.querySelectorAll(".row");
         const rowHeight = `calc((100% - 70px) / ${numberOfRows})`;
@@ -295,22 +348,35 @@
         });
       }
 
-      function showPreview(src) {
+      function showPreview(src, caption) {
         const imgPreview = document.getElementById("imgPreview");
+        const imgCaption = document.getElementById("imgCaption");
         imgPreview.src = src;
-        imgPreview.style.display = "block";
+        imgCaption.textContent = caption;
+        document.getElementById("previewContainer").style.display = "block";
       }
 
       function hidePreview() {
-        const imgPreview = document.getElementById("imgPreview");
-        imgPreview.style.display = "none";
+        document.getElementById("previewContainer").style.display = "none";
+      }
+
+      function applyRandomFontToLines(text) {
+        const lines = text.split("\\n");
+        return lines
+          .map((line) => `<div>${randomizeFont(line)}</div>`)
+          .join("<br>");
       }
 
       function randomizeFont(text) {
-        return text.split('').map(char => {
-          const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
-          return `<span style="font-family: ${randomFont}; font-size: 16px; line-height: 1.5;">${char === ' ' ? '&nbsp;' : char}</span>`;
-        }).join('');
+        return text
+          .split("")
+          .map((char) => {
+            const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+            return `<span style="font-family: ${randomFont}; font-size: 16px; line-height: 1.5;">${
+              char === " " ? "&nbsp;" : char
+            }</span>`;
+          })
+          .join("");
       }
 
       function applyRandomFontToTitle() {
@@ -323,13 +389,13 @@
         label1.innerHTML = randomizeFont(label1.textContent);
       }
 
-      window.onload = function() {
+      window.onload = function () {
         loadSheetsApi();
         applyRandomFontToTitle();
         applyRandomFontToLabels();
-        window.addEventListener('resize', adjustRowHeight);
+        window.addEventListener("resize", adjustRowHeight);
         adjustRowHeight();
-      }
+      };
     </script>
-</body>
+  </body>
 </html>
