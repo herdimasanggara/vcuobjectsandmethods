@@ -3,15 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="Objects + Methods">
-    <meta property="og:description" content="A public lecture series that focuses on expansive conversations around design practices.">
-    <meta property="og:image" content="meta-image.jpg">
-    <meta property="og:url" content="https://objectsandmethods.com/">
+    <meta property="og:title" content="Objects + Methods" />
+    <meta
+      property="og:description"
+      content="A public lecture series that focuses on expansive conversations around design practices."
+    />
+    <meta property="og:image" content="meta-image.jpg" />
+    <meta property="og:url" content="https://objectsandmethods.com/" />
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"> -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <!-- <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"> -->
     <title>Objects + Methods</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Georgia&family=Arial&family=Verdana&family=Lucida+Handwriting&display=swap">
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Georgia&family=Arial&family=Verdana&family=Lucida+Handwriting&display=swap"
+    />
     <style>
       body,
       button {
@@ -305,44 +311,24 @@
 
       function toggleRows() {
         const isChecked = document.getElementById("dialogueToggle").checked;
-        const isFiveRows = !isChecked;
         const labelText = isChecked ? "with Dialogues" : "without Dialogues";
-        document.getElementById("toggleLabel").innerHTML =
-          randomizeFont(labelText);
+        const labelElement = document.getElementById("toggleLabel");
+
+        labelElement.innerHTML = randomizeFont(labelText);
+
+        if (isChecked) {
+          labelElement.style.color = "white";
+        } else {
+          labelElement.style.color = "yellow";
+        }
+
         populateRows(
-          isFiveRows ? dataForFiveRows : dataForSixteenRows,
-          isFiveRows ? bgColorsWithoutDialogues : bgColorsWithDialogues,
-          isFiveRows ? captionsForFiveRows : captionsForSixteenRows,
-          isFiveRows
+          isChecked ? dataForSixteenRows : dataForFiveRows,
+          isChecked ? bgColorsWithDialogues : bgColorsWithoutDialogues,
+          isChecked ? captionsForSixteenRows : captionsForFiveRows,
+          !isChecked
         );
         adjustRowHeight();
-      }
-
-      function populateRows(data, bgColors, captions, isFiveRows) {
-        const tabContent = document.getElementById("tab1");
-        tabContent.innerHTML = "";
-        data.forEach((row, index) => {
-          const divRow = document.createElement("div");
-          divRow.className = "row";
-          divRow.style.backgroundColor = bgColors[index] || "#ffffff";
-          row.forEach((value, colIndex) => {
-            const divCol = document.createElement("div");
-            divCol.className = isFiveRows
-              ? "column col" + (colIndex + 1)
-              : "column col" + (colIndex + 1);
-            if (colIndex === 0 && value.startsWith("http")) {
-              const img = document.createElement("img");
-              img.src = value;
-              img.onmouseover = () => showPreview(img.src, captions[index]);
-              img.onmouseout = hidePreview;
-              divCol.appendChild(img);
-            } else {
-              divCol.innerHTML = applyRandomFontToLines(value);
-            }
-            divRow.appendChild(divCol);
-          });
-          tabContent.appendChild(divRow);
-        });
       }
 
       function adjustRowHeight() {
@@ -368,10 +354,16 @@
       }
 
       function applyRandomFontToLines(text) {
-        const lines = text.split("\\n");
-        return lines
-          .map((line) => `<div>${randomizeFont(line)}</div>`)
-          .join("<br>");
+        const htmlTagPattern = /(<a [^>]+>)([^<]+)(<\/a>)/g;
+
+        // Replace the text inside the <a> tags with randomized fonts
+        return text.replace(
+          htmlTagPattern,
+          (match, openingTag, innerText, closingTag) => {
+            const randomizedText = randomizeFont(innerText);
+            return `${openingTag}${randomizedText}${closingTag}`;
+          }
+        );
       }
 
       function randomizeFont(text) {
@@ -384,6 +376,38 @@
             }</span>`;
           })
           .join("");
+      }
+
+      function populateRows(data, bgColors, captions, isFiveRows) {
+        const tabContent = document.getElementById("tab1");
+        tabContent.innerHTML = "";
+        data.forEach((row, index) => {
+          const divRow = document.createElement("div");
+          divRow.className = "row";
+          divRow.style.backgroundColor = bgColors[index] || "#ffffff";
+          row.forEach((value, colIndex) => {
+            const divCol = document.createElement("div");
+            divCol.className = isFiveRows
+              ? "column col" + (colIndex + 1)
+              : "column col" + (colIndex + 1);
+
+            if (
+              colIndex === 0 &&
+              (value.endsWith(".png") || value.endsWith(".jpg"))
+            ) {
+              const img = document.createElement("img");
+              img.src = value;
+              img.onmouseover = () => showPreview(img.src, captions[index]);
+              img.onmouseout = hidePreview;
+              divCol.appendChild(img);
+            } else {
+              // Treat the value as HTML content to allow embedded links
+              divCol.innerHTML = applyRandomFontToLines(value);
+            }
+            divRow.appendChild(divCol);
+          });
+          tabContent.appendChild(divRow);
+        });
       }
 
       function applyRandomFontToTitle() {
