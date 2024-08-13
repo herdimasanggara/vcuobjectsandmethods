@@ -281,7 +281,7 @@ function initializeSheetsApi() {
 }
 
 function fetchAllData() {
-  showLoadingScreen(); // Show loading screen before fetching data
+  showLoadingScreen();
 
   getSpreadsheetData(true, function (data) {
     dataForFiveRows = data.values;
@@ -294,14 +294,14 @@ function fetchAllData() {
       true
     );
     adjustRowHeight();
-    hideLoadingScreen(); // Hide loading screen after fetching the first set of data
+    hideLoadingScreen();
   });
 
   getSpreadsheetData(false, function (data) {
     dataForSixteenRows = data.values;
     bgColorsWithDialogues = data.bgColors;
     captionsForSixteenRows = data.captions;
-    hideLoadingScreen(); // Hide loading screen after fetching the second set of data if necessary
+    hideLoadingScreen();
   });
 }
 
@@ -314,9 +314,9 @@ function hideLoadingScreen() {
 }
 
 function getSpreadsheetData(isFiveRows, callback) {
-  var range = isFiveRows ? "Sheet1!B3:F8" : "Sheet1!B23:F39";
-  var bgColorRange = isFiveRows ? "Sheet1!G3:G8" : "Sheet1!G23:G39";
-  var captionRange = isFiveRows ? "Sheet1!H3:H8" : "Sheet1!H23:H39";
+  var range = isFiveRows ? "Sheet1!B3:F9" : "Sheet1!B23:F39";
+  var bgColorRange = isFiveRows ? "Sheet1!G3:G9" : "Sheet1!G23:G39";
+  var captionRange = isFiveRows ? "Sheet1!H3:H9" : "Sheet1!H23:H39";
 
   Promise.all([
     gapi.client.sheets.spreadsheets.values.get({
@@ -445,7 +445,7 @@ function populateRows(data, bgColors, captions, isFiveRows) {
         divCol.appendChild(img);
       } else {
         divCol.innerHTML = value;
-        randomizeFontForElement(divCol); // Apply font randomization
+        randomizeFontForElement(divCol);
       }
       divRow.appendChild(divCol);
     });
@@ -470,8 +470,6 @@ window.onload = function () {
   window.addEventListener("resize", adjustRowHeight);
   adjustRowHeight();
 };
-
-
     </script>
   </body>
 </html>
