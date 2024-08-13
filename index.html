@@ -249,231 +249,229 @@
     </div>
 
     <script>
-      let dataForFiveRows = null;
-      let dataForSixteenRows = null;
-      let captionsForFiveRows = null;
-      let captionsForSixteenRows = null;
-      let bgColorsWithoutDialogues = [];
-      let bgColorsWithDialogues = [];
-      const fonts = [
-        "'Times New Roman', serif",
-        "'Georgia', serif",
-        "'Arial', sans-serif",
-        "'Verdana', sans-serif",
-        "'Lucida Handwriting', cursive",
-      ];
+let dataForFiveRows = null;
+let dataForSixteenRows = null;
+let captionsForFiveRows = null;
+let captionsForSixteenRows = null;
+let bgColorsWithoutDialogues = [];
+let bgColorsWithDialogues = [];
+const fonts = [
+  "'Times New Roman', serif",
+  "'Georgia', serif",
+  "'Arial', sans-serif",
+  "'Verdana', sans-serif",
+  "'Lucida Handwriting', cursive",
+];
 
-      function loadSheetsApi() {
-        gapi.load("client", initializeSheetsApi);
+function loadSheetsApi() {
+  gapi.load("client", initializeSheetsApi);
+}
+
+function initializeSheetsApi() {
+  gapi.client
+    .init({
+      apiKey: "AIzaSyAHxCjDdEoQFLEySe1j-KQBV-fIoTiIhGM",
+      discoveryDocs: [
+        "https://sheets.googleapis.com/$discovery/rest?version=v4",
+      ],
+    })
+    .then(function () {
+      fetchAllData();
+    });
+}
+
+function fetchAllData() {
+  showLoadingScreen(); // Show loading screen before fetching data
+
+  getSpreadsheetData(true, function (data) {
+    dataForFiveRows = data.values;
+    bgColorsWithoutDialogues = data.bgColors;
+    captionsForFiveRows = data.captions;
+    populateRows(
+      dataForFiveRows,
+      bgColorsWithoutDialogues,
+      captionsForFiveRows,
+      true
+    );
+    adjustRowHeight();
+    hideLoadingScreen(); // Hide loading screen after fetching the first set of data
+  });
+
+  getSpreadsheetData(false, function (data) {
+    dataForSixteenRows = data.values;
+    bgColorsWithDialogues = data.bgColors;
+    captionsForSixteenRows = data.captions;
+    hideLoadingScreen(); // Hide loading screen after fetching the second set of data if necessary
+  });
+}
+
+function showLoadingScreen() {
+  document.getElementById("loadingScreen").style.display = "flex";
+}
+
+function hideLoadingScreen() {
+  document.getElementById("loadingScreen").style.display = "none";
+}
+
+function getSpreadsheetData(isFiveRows, callback) {
+  var range = isFiveRows ? "Sheet1!B3:F8" : "Sheet1!B23:F39";
+  var bgColorRange = isFiveRows ? "Sheet1!G3:G8" : "Sheet1!G23:G39";
+  var captionRange = isFiveRows ? "Sheet1!H3:H8" : "Sheet1!H23:H39";
+
+  Promise.all([
+    gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
+      range: range,
+    }),
+    gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
+      range: bgColorRange,
+    }),
+    gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
+      range: captionRange,
+    }),
+  ])
+    .then((responses) => {
+      const valuesResponse = responses[0];
+      const bgColorsResponse = responses[1];
+      const captionsResponse = responses[2];
+
+      const values = valuesResponse.result.values;
+      const bgColors = bgColorsResponse.result.values.map((row) => row[0]);
+      const captions = captionsResponse.result.values.map((row) => row[0]);
+
+      if (values.length > 0) {
+        callback({ values, bgColors, captions });
+      } else {
+        console.log("No data found.");
       }
+    })
+    .catch((error) => {
+      console.log("Error: " + error.result.error.message);
+    });
+}
 
-      function initializeSheetsApi() {
-        gapi.client
-          .init({
-            apiKey: "AIzaSyAHxCjDdEoQFLEySe1j-KQBV-fIoTiIhGM",
-            discoveryDocs: [
-              "https://sheets.googleapis.com/$discovery/rest?version=v4",
-            ],
-          })
-          .then(function () {
-            fetchAllData();
-          });
+function toggleRows() {
+  const isChecked = document.getElementById("dialogueToggle").checked;
+  const labelText = isChecked ? "with Dialogues" : "without Dialogues";
+  const labelElement = document.getElementById("toggleLabel");
+
+  labelElement.innerHTML = randomizeFont(labelText);
+
+  if (isChecked) {
+    labelElement.style.color = "white";
+  } else {
+    labelElement.style.color = "yellow";
+  }
+
+  populateRows(
+    isChecked ? dataForSixteenRows : dataForFiveRows,
+    isChecked ? bgColorsWithDialogues : bgColorsWithoutDialogues,
+    isChecked ? captionsForSixteenRows : captionsForFiveRows,
+    !isChecked
+  );
+  adjustRowHeight();
+}
+
+function adjustRowHeight() {
+  const isChecked = document.getElementById("dialogueToggle").checked;
+  const numberOfRows = isChecked ? 16 : 5;
+  const rowElements = document.querySelectorAll(".row");
+  const rowHeight = `calc((100% - 70px) / ${numberOfRows})`;
+  rowElements.forEach((row) => {
+    row.style.height = rowHeight;
+  });
+}
+
+function showPreview(src, caption) {
+  const imgPreview = document.getElementById("imgPreview");
+  const imgCaption = document.getElementById("imgCaption");
+  imgPreview.src = src;
+  imgCaption.textContent = caption;
+  document.getElementById("previewContainer").style.display = "block";
+}
+
+function hidePreview() {
+  document.getElementById("previewContainer").style.display = "none";
+}
+
+function randomizeFont(text) {
+  return text
+    .split("")
+    .map((char) => {
+      const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+      return `<span style="font-family: ${randomFont}; font-size: 16px; line-height: 1.5;">${
+        char === " " ? "&nbsp;" : char
+      }</span>`;
+    })
+    .join("");
+}
+
+function randomizeFontForElement(element) {
+  const children = Array.from(element.childNodes);
+  children.forEach((child) => {
+    if (child.nodeType === Node.TEXT_NODE) {
+      const span = document.createElement("span");
+      span.innerHTML = randomizeFont(child.textContent);
+      element.replaceChild(span, child);
+    } else if (child.nodeType === Node.ELEMENT_NODE) {
+      randomizeFontForElement(child);
+    }
+  });
+}
+
+function populateRows(data, bgColors, captions, isFiveRows) {
+  const tabContent = document.getElementById("tab1");
+  tabContent.innerHTML = "";
+  data.forEach((row, index) => {
+    const divRow = document.createElement("div");
+    divRow.className = "row";
+    divRow.style.backgroundColor = bgColors[index] || "#ffffff";
+    row.forEach((value, colIndex) => {
+      const divCol = document.createElement("div");
+      divCol.className = isFiveRows
+        ? "column col" + (colIndex + 1)
+        : "column col" + (colIndex + 1);
+
+      if (
+        colIndex === 0 &&
+        (value.endsWith(".png") || value.endsWith(".jpg"))
+      ) {
+        const img = document.createElement("img");
+        img.src = value;
+        img.onmouseover = () => showPreview(img.src, captions[index]);
+        img.onmouseout = hidePreview;
+        divCol.appendChild(img);
+      } else {
+        divCol.innerHTML = value;
+        randomizeFontForElement(divCol); // Apply font randomization
       }
+      divRow.appendChild(divCol);
+    });
+    tabContent.appendChild(divRow);
+  });
+}
 
-      function fetchAllData() {
-        showLoadingScreen(); // Show loading screen before fetching data
+function applyRandomFontToTitle() {
+  const titleElement = document.getElementById("title");
+  randomizeFontForElement(titleElement);
+}
 
-        getSpreadsheetData(true, function (data) {
-          dataForFiveRows = data.values;
-          bgColorsWithoutDialogues = data.bgColors;
-          captionsForFiveRows = data.captions;
-          populateRows(
-            dataForFiveRows,
-            bgColorsWithoutDialogues,
-            captionsForFiveRows,
-            true
-          );
-          adjustRowHeight();
-          hideLoadingScreen(); // Hide loading screen after fetching the first set of data
-        });
+function applyRandomFontToLabels() {
+  const label1 = document.getElementById("toggleLabel");
+  randomizeFontForElement(label1);
+}
 
-        getSpreadsheetData(false, function (data) {
-          dataForSixteenRows = data.values;
-          bgColorsWithDialogues = data.bgColors;
-          captionsForSixteenRows = data.captions;
-          hideLoadingScreen(); // Hide loading screen after fetching the second set of data if necessary
-        });
-      }
+window.onload = function () {
+  loadSheetsApi();
+  applyRandomFontToTitle();
+  applyRandomFontToLabels();
+  window.addEventListener("resize", adjustRowHeight);
+  adjustRowHeight();
+};
 
-      function showLoadingScreen() {
-        document.getElementById("loadingScreen").style.display = "flex";
-      }
 
-      function hideLoadingScreen() {
-        document.getElementById("loadingScreen").style.display = "none";
-      }
-
-      function getSpreadsheetData(isFiveRows, callback) {
-        var range = isFiveRows ? "Sheet1!B3:F8" : "Sheet1!B23:F39";
-        var bgColorRange = isFiveRows ? "Sheet1!G3:G8" : "Sheet1!G23:G39";
-        var captionRange = isFiveRows ? "Sheet1!H3:H8" : "Sheet1!H23:H39";
-
-        Promise.all([
-          gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
-            range: range,
-          }),
-          gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
-            range: bgColorRange,
-          }),
-          gapi.client.sheets.spreadsheets.values.get({
-            spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
-            range: captionRange,
-          }),
-        ])
-          .then((responses) => {
-            const valuesResponse = responses[0];
-            const bgColorsResponse = responses[1];
-            const captionsResponse = responses[2];
-
-            const values = valuesResponse.result.values;
-            const bgColors = bgColorsResponse.result.values.map(
-              (row) => row[0]
-            );
-            const captions = captionsResponse.result.values.map(
-              (row) => row[0]
-            );
-
-            if (values.length > 0) {
-              callback({ values, bgColors, captions });
-            } else {
-              console.log("No data found.");
-            }
-          })
-          .catch((error) => {
-            console.log("Error: " + error.result.error.message);
-          });
-      }
-
-      function toggleRows() {
-        const isChecked = document.getElementById("dialogueToggle").checked;
-        const labelText = isChecked ? "with Dialogues" : "without Dialogues";
-        const labelElement = document.getElementById("toggleLabel");
-
-        labelElement.innerHTML = randomizeFont(labelText);
-
-        if (isChecked) {
-          labelElement.style.color = "white";
-        } else {
-          labelElement.style.color = "yellow";
-        }
-
-        populateRows(
-          isChecked ? dataForSixteenRows : dataForFiveRows,
-          isChecked ? bgColorsWithDialogues : bgColorsWithoutDialogues,
-          isChecked ? captionsForSixteenRows : captionsForFiveRows,
-          !isChecked
-        );
-        adjustRowHeight();
-      }
-
-      function adjustRowHeight() {
-        const isChecked = document.getElementById("dialogueToggle").checked;
-        const numberOfRows = isChecked ? 16 : 5;
-        const rowElements = document.querySelectorAll(".row");
-        const rowHeight = `calc((100% - 70px) / ${numberOfRows})`;
-        rowElements.forEach((row) => {
-          row.style.height = rowHeight;
-        });
-      }
-
-      function showPreview(src, caption) {
-        const imgPreview = document.getElementById("imgPreview");
-        const imgCaption = document.getElementById("imgCaption");
-        imgPreview.src = src;
-        imgCaption.textContent = caption;
-        document.getElementById("previewContainer").style.display = "block";
-      }
-
-      function hidePreview() {
-        document.getElementById("previewContainer").style.display = "none";
-      }
-
-      function applyRandomFontToLines(text) {
-        const htmlTagPattern = /(<a [^>]+>)([^<]+)(<\/a>)/g;
-
-        // Replace the text inside the <a> tags with randomized fonts
-        return text.replace(
-          htmlTagPattern,
-          (match, openingTag, innerText, closingTag) => {
-            const randomizedText = randomizeFont(innerText);
-            return `${openingTag}${randomizedText}${closingTag}`;
-          }
-        );
-      }
-
-      function randomizeFont(text) {
-        return text
-          .split("")
-          .map((char) => {
-            const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
-            return `<span style="font-family: ${randomFont}; font-size: 16px; line-height: 1.5;">${
-              char === " " ? "&nbsp;" : char
-            }</span>`;
-          })
-          .join("");
-      }
-
-      function populateRows(data, bgColors, captions, isFiveRows) {
-        const tabContent = document.getElementById("tab1");
-        tabContent.innerHTML = "";
-        data.forEach((row, index) => {
-          const divRow = document.createElement("div");
-          divRow.className = "row";
-          divRow.style.backgroundColor = bgColors[index] || "#ffffff";
-          row.forEach((value, colIndex) => {
-            const divCol = document.createElement("div");
-            divCol.className = isFiveRows
-              ? "column col" + (colIndex + 1)
-              : "column col" + (colIndex + 1);
-
-            if (
-              colIndex === 0 &&
-              (value.endsWith(".png") || value.endsWith(".jpg"))
-            ) {
-              const img = document.createElement("img");
-              img.src = value;
-              img.onmouseover = () => showPreview(img.src, captions[index]);
-              img.onmouseout = hidePreview;
-              divCol.appendChild(img);
-            } else {
-              // Treat the value as HTML content to allow embedded links
-              divCol.innerHTML = applyRandomFontToLines(value);
-            }
-            divRow.appendChild(divCol);
-          });
-          tabContent.appendChild(divRow);
-        });
-      }
-
-      function applyRandomFontToTitle() {
-        const titleElement = document.getElementById("title");
-        titleElement.innerHTML = randomizeFont(titleElement.textContent);
-      }
-
-      function applyRandomFontToLabels() {
-        const label1 = document.getElementById("toggleLabel");
-        label1.innerHTML = randomizeFont(label1.textContent);
-      }
-
-      window.onload = function () {
-        loadSheetsApi();
-        applyRandomFontToTitle();
-        applyRandomFontToLabels();
-        window.addEventListener("resize", adjustRowHeight);
-        adjustRowHeight();
-      };
     </script>
   </body>
 </html>
