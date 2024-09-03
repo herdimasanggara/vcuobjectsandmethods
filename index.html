@@ -226,6 +226,16 @@
           transform: rotate(360deg);
         }
       }
+
+      #imgCaption {
+        background-color: black;
+        color: yellow;
+        font-size: 16px;
+        padding: 10px;
+        border-radius: 25px;
+        text-align: center;
+        font-family: 'Times New Roman', serif;
+      }
     </style>
     <script src="https://apis.google.com/js/api.js"></script>
   </head>
@@ -388,7 +398,7 @@ function showPreview(src, caption) {
   const imgPreview = document.getElementById("imgPreview");
   const imgCaption = document.getElementById("imgCaption");
   imgPreview.src = src;
-  imgCaption.textContent = caption;
+  imgCaption.innerHTML = randomizeFont(caption);
   document.getElementById("previewContainer").style.display = "block";
 }
 
