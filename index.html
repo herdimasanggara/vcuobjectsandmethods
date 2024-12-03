@@ -10,9 +10,7 @@
     />
     <meta property="og:image" content="meta-image.jpg" />
     <meta property="og:url" content="https://objectsandmethods.com/" />
-    <!-- <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png"> -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
-    <!-- <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png"> -->
     <title>Objects + Methods</title>
     <link
       rel="stylesheet"
@@ -40,6 +38,18 @@
         align-items: center;
         padding: 0 10px;
         position: relative;
+      }
+      .dropdown-container {
+        position: absolute;
+        left: 10px;
+        z-index: 10;
+      }
+      .dropdown {
+        font-size: 16px;
+        background-color: yellow;
+        border-radius: 20px;
+        padding: 5px;
+        cursor: pointer;
       }
       .tabs > span {
         display: flex;
@@ -249,8 +259,14 @@
       <div class="spinner"></div>
     </div>
     <div class="tabs">
+      <div class="dropdown-container">
+        <select id="sheetSelector" class="dropdown" onchange="updateSheetSelection()">
+          <option value="Sheet2">Spring 2025</option>
+          <option value="Sheet1">Fall 2024</option>
+        </select>
+      </div>
       <div class="title-container">
-        <span id="title">VCU GDES ☞ Objects + Methods Fall 2024</span>
+        <span id="title">VCU GDES ☞ Objects + Methods</span>
       </div>
       <div class="toggle-container" onclick="toggleRows()">
         <span id="toggleLabel" class="toggle-label">without Dialogues</span>
@@ -264,7 +280,7 @@
     </div>
 
     <script>
-      let dataForFiveRows = null;
+    let dataForFiveRows = null;
       let dataForSixteenRows = null;
       let captionsForFiveRows = null;
       let captionsForSixteenRows = null;
@@ -277,11 +293,13 @@
         "'Verdana', sans-serif",
         "'Lucida Handwriting', cursive",
       ];
-
+      
+      let currentSheet = "Sheet2"; // Default to Sheet2
+      
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
       }
-
+      
       function initializeSheetsApi() {
         gapi.client
           .init({
@@ -294,10 +312,10 @@
             fetchAllData();
           });
       }
-
+      
       function fetchAllData() {
         showLoadingScreen();
-
+      
         getSpreadsheetData(true, function (data) {
           dataForFiveRows = data.values;
           bgColorsWithoutDialogues = data.bgColors;
@@ -311,7 +329,7 @@
           adjustRowHeight();
           hideLoadingScreen();
         });
-
+      
         getSpreadsheetData(false, function (data) {
           dataForSixteenRows = data.values;
           bgColorsWithDialogues = data.bgColors;
@@ -319,20 +337,23 @@
           hideLoadingScreen();
         });
       }
-
+      
       function showLoadingScreen() {
         document.getElementById("loadingScreen").style.display = "flex";
       }
-
+      
       function hideLoadingScreen() {
         document.getElementById("loadingScreen").style.display = "none";
       }
-
+      
       function getSpreadsheetData(isFiveRows, callback) {
-        var range = isFiveRows ? "Sheet1!B3:F9" : "Sheet1!B23:F39";
-        var bgColorRange = isFiveRows ? "Sheet1!G3:G9" : "Sheet1!G23:G39";
-        var captionRange = isFiveRows ? "Sheet1!H3:H9" : "Sheet1!H23:H39";
-
+        const rangeBase = currentSheet === "Sheet2" ? "Sheet2!" : "Sheet1!";
+        const range = isFiveRows ? `${rangeBase}B3:F9` : `${rangeBase}B23:F39`;
+        const bgColorRange = isFiveRows ? `${rangeBase}G3:G9` : `${rangeBase}G23:G39`;
+        const captionRange = isFiveRows
+          ? `${rangeBase}H3:H9`
+          : `${rangeBase}H23:H39`;
+      
         Promise.all([
           gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
@@ -351,15 +372,11 @@
             const valuesResponse = responses[0];
             const bgColorsResponse = responses[1];
             const captionsResponse = responses[2];
-
+      
             const values = valuesResponse.result.values;
-            const bgColors = bgColorsResponse.result.values.map(
-              (row) => row[0]
-            );
-            const captions = captionsResponse.result.values.map(
-              (row) => row[0]
-            );
-
+            const bgColors = bgColorsResponse.result.values.map((row) => row[0]);
+            const captions = captionsResponse.result.values.map((row) => row[0]);
+      
             if (values.length > 0) {
               callback({ values, bgColors, captions });
             } else {
@@ -370,20 +387,20 @@
             console.log("Error: " + error.result.error.message);
           });
       }
-
+      
       function toggleRows() {
         const isChecked = document.getElementById("dialogueToggle").checked;
         const labelText = isChecked ? "with Dialogues" : "without Dialogues";
         const labelElement = document.getElementById("toggleLabel");
-
+      
         labelElement.innerHTML = randomizeFont(labelText);
-
+      
         if (isChecked) {
           labelElement.style.color = "white";
         } else {
           labelElement.style.color = "yellow";
         }
-
+      
         populateRows(
           isChecked ? dataForSixteenRows : dataForFiveRows,
           isChecked ? bgColorsWithDialogues : bgColorsWithoutDialogues,
@@ -392,7 +409,7 @@
         );
         adjustRowHeight();
       }
-
+      
       function adjustRowHeight() {
         const isChecked = document.getElementById("dialogueToggle").checked;
         const numberOfRows = isChecked ? 16 : 5;
@@ -402,7 +419,7 @@
           row.style.height = rowHeight;
         });
       }
-
+      
       function showPreview(src, caption) {
         const imgPreview = document.getElementById("imgPreview");
         const imgCaption = document.getElementById("imgCaption");
@@ -410,11 +427,11 @@
         imgCaption.innerHTML = randomizeFont(caption);
         document.getElementById("previewContainer").style.display = "block";
       }
-
+      
       function hidePreview() {
         document.getElementById("previewContainer").style.display = "none";
       }
-
+      
       function randomizeFont(text) {
         return text
           .split("")
@@ -426,7 +443,7 @@
           })
           .join("");
       }
-
+      
       function randomizeFontForElement(element) {
         const children = Array.from(element.childNodes);
         children.forEach((child) => {
@@ -439,7 +456,7 @@
           }
         });
       }
-
+      
       function populateRows(data, bgColors, captions, isFiveRows) {
         const tabContent = document.getElementById("tab1");
         tabContent.innerHTML = "";
@@ -452,7 +469,7 @@
             divCol.className = isFiveRows
               ? "column col" + (colIndex + 1)
               : "column col" + (colIndex + 1);
-
+      
             if (
               colIndex === 0 &&
               (value.endsWith(".png") || value.endsWith(".jpg"))
@@ -471,24 +488,40 @@
           tabContent.appendChild(divRow);
         });
       }
-
+      
       function applyRandomFontToTitle() {
         const titleElement = document.getElementById("title");
         randomizeFontForElement(titleElement);
       }
-
+      
       function applyRandomFontToLabels() {
         const label1 = document.getElementById("toggleLabel");
         randomizeFontForElement(label1);
       }
-
+      
+      function updateSheetSelection() {
+        const selector = document.getElementById("sheetSelector");
+        currentSheet = selector.value;
+        applyRandomFontToDropdown(selector);
+        fetchAllData(); // Refetch data based on the selected sheet
+      }
+      
+      function applyRandomFontToDropdown(selector) {
+        Array.from(selector.options).forEach((option) => {
+          option.innerHTML = randomizeFont(option.textContent);
+        });
+      }
+      
       window.onload = function () {
         loadSheetsApi();
         applyRandomFontToTitle();
         applyRandomFontToLabels();
+        const selector = document.getElementById("sheetSelector");
+        applyRandomFontToDropdown(selector); // Apply random font to dropdown on load
         window.addEventListener("resize", adjustRowHeight);
         adjustRowHeight();
       };
+      
     </script>
   </body>
 </html>
