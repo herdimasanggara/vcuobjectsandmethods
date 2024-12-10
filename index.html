@@ -75,10 +75,10 @@
       .checkbox {
         -webkit-appearance: none;
         appearance: none;
-        width: 40px;
-        height: 20px;
+        width: 50px;
+        height: 30px;
         background-color: yellow;
-        border-radius: 10px;
+        border-radius: 20px;
         position: relative;
         outline: none;
         cursor: pointer;
@@ -92,8 +92,8 @@
         position: absolute;
         top: 2px;
         left: 2px;
-        width: 16px;
-        height: 16px;
+        width: 26px;
+        height: 26px;
         background-color: #000;
         border-radius: 50%;
         transition: transform 0.2s ease;
@@ -294,7 +294,7 @@
         "'Lucida Handwriting', cursive",
       ];
       
-      let currentSheet = "Sheet2"; // Default to Sheet2
+      let currentSheet = "Spring 2025"; // Default to Sheet2
       
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
@@ -347,7 +347,7 @@
       }
       
       function getSpreadsheetData(isFiveRows, callback) {
-        const rangeBase = currentSheet === "Sheet2" ? "Sheet2!" : "Sheet1!";
+        const rangeBase = currentSheet === "Spring 2025" ? "Spring 2025!" : "Fall 2024!";
         const range = isFiveRows ? `${rangeBase}B3:F9` : `${rangeBase}B23:F39`;
         const bgColorRange = isFiveRows ? `${rangeBase}G3:G9` : `${rangeBase}G23:G39`;
         const captionRange = isFiveRows
