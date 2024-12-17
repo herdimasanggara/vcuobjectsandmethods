@@ -21,6 +21,7 @@
       button {
         font-family: "Times New Roman", serif;
       }
+
       body {
         margin: 0;
         padding: 0;
@@ -29,6 +30,7 @@
         flex-direction: column;
         overflow: hidden;
       }
+
       .tabs {
         display: flex;
         background-color: black;
@@ -39,11 +41,13 @@
         padding: 0 10px;
         position: relative;
       }
+
       .dropdown-container {
         position: absolute;
         left: 10px;
         z-index: 10;
       }
+
       .dropdown {
         font-size: 16px;
         background-color: yellow;
@@ -51,6 +55,7 @@
         padding: 5px;
         cursor: pointer;
       }
+
       .tabs > span {
         display: flex;
         align-items: center;
@@ -58,6 +63,7 @@
         justify-content: center;
         white-space: nowrap;
       }
+
       .toggle-container {
         display: flex;
         align-items: center;
@@ -65,6 +71,7 @@
         right: 10px;
         cursor: pointer;
       }
+
       .toggle-label {
         margin-right: 10px;
         user-select: none;
@@ -72,6 +79,7 @@
         font-size: 16px;
         line-height: 1.5;
       }
+
       .checkbox {
         -webkit-appearance: none;
         appearance: none;
@@ -84,9 +92,11 @@
         cursor: pointer;
         transition: background-color 0.2s ease;
       }
+
       .checkbox:checked {
         background-color: #e8e8e8;
       }
+
       .checkbox:before {
         content: "";
         position: absolute;
@@ -98,15 +108,19 @@
         border-radius: 50%;
         transition: transform 0.2s ease;
       }
+
       .checkbox:checked:before {
         transform: translateX(20px);
       }
+
       .checkbox:hover {
         background-color: yellow;
       }
+
       .checkbox:checked:hover {
         background-color: #fff;
       }
+
       .tab-content {
         display: flex;
         flex-direction: column;
@@ -114,6 +128,7 @@
         overflow: hidden;
         height: calc(100% - 70px);
       }
+
       .row {
         border-bottom: 1px solid black;
         display: flex;
@@ -122,6 +137,7 @@
         flex-grow: 1;
         overflow: hidden;
       }
+
       .column,
       .colleft,
       .colright {
@@ -131,27 +147,33 @@
         text-align: center;
         padding-right: 5px;
       }
+
       .col1,
       .col2,
       .col3,
       .col5 {
         flex: 1;
       }
+
       .col4 {
         flex: 3;
       }
+
       .colleft {
         flex: 1;
       }
+
       .colright {
         flex: 9;
       }
+
       img {
         max-width: 100%;
         height: 100%;
         object-fit: contain;
         position: relative;
       }
+
       .preview-container {
         display: none;
         position: fixed;
@@ -163,11 +185,13 @@
         z-index: 5;
         text-align: center;
       }
+
       .caption {
         font-size: 12px;
         color: #333;
         margin-top: 5px;
       }
+
       .title-container {
         position: absolute;
         left: 50%;
@@ -176,29 +200,40 @@
         text-align: center;
         color: yellow;
       }
+
       .toggle-label {
         color: yellow;
       }
+      
       @media (max-width: 768px) {
         body {
           overflow-y: scroll;
           overflow-x: none;
         }
+
         .title-container {
           left: 50%;
           transform: translateX(-50%);
           white-space: normal;
           text-align: center;
         }
+
         .tabs {
           justify-content: center;
         }
+
+        .dropdown-container {
+          display: none;
+        }
+
         .toggle-container {
           display: none;
         }
+
         .row .column {
           display: none;
         }
+
         .row .col2,
         .row .col4 {
           display: flex;
@@ -260,7 +295,11 @@
     </div>
     <div class="tabs">
       <div class="dropdown-container">
-        <select id="sheetSelector" class="dropdown" onchange="updateSheetSelection()">
+        <select
+          id="sheetSelector"
+          class="dropdown"
+          onchange="updateSheetSelection()"
+        >
           <option value="Sheet2">Spring 2025</option>
           <option value="Sheet1">Fall 2024</option>
         </select>
@@ -280,7 +319,7 @@
     </div>
 
     <script>
-    let dataForFiveRows = null;
+      let dataForFiveRows = null;
       let dataForSixteenRows = null;
       let captionsForFiveRows = null;
       let captionsForSixteenRows = null;
@@ -293,13 +332,13 @@
         "'Verdana', sans-serif",
         "'Lucida Handwriting', cursive",
       ];
-      
-      let currentSheet = "Spring 2025"; // Default to Sheet2
-      
+
+      let currentSheet = "Spring 2025";
+
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
       }
-      
+
       function initializeSheetsApi() {
         gapi.client
           .init({
@@ -312,48 +351,62 @@
             fetchAllData();
           });
       }
-      
+
       function fetchAllData() {
         showLoadingScreen();
-      
-        getSpreadsheetData(true, function (data) {
+        getSpreadsheetData(true, (data) => {
           dataForFiveRows = data.values;
           bgColorsWithoutDialogues = data.bgColors;
           captionsForFiveRows = data.captions;
-          populateRows(
-            dataForFiveRows,
-            bgColorsWithoutDialogues,
-            captionsForFiveRows,
-            true
-          );
-          adjustRowHeight();
-          hideLoadingScreen();
+
+          if (!document.getElementById("dialogueToggle").checked) {
+            populateRows(
+              dataForFiveRows,
+              bgColorsWithoutDialogues,
+              captionsForFiveRows,
+              true
+            );
+            adjustRowHeight();
+          }
         });
-      
-        getSpreadsheetData(false, function (data) {
+
+        getSpreadsheetData(false, (data) => {
           dataForSixteenRows = data.values;
           bgColorsWithDialogues = data.bgColors;
           captionsForSixteenRows = data.captions;
+
+          if (document.getElementById("dialogueToggle").checked) {
+            populateRows(
+              dataForSixteenRows,
+              bgColorsWithDialogues,
+              captionsForSixteenRows,
+              false
+            );
+            adjustRowHeight();
+          }
           hideLoadingScreen();
         });
       }
-      
+
       function showLoadingScreen() {
         document.getElementById("loadingScreen").style.display = "flex";
       }
-      
+
       function hideLoadingScreen() {
         document.getElementById("loadingScreen").style.display = "none";
       }
-      
+
       function getSpreadsheetData(isFiveRows, callback) {
-        const rangeBase = currentSheet === "Spring 2025" ? "Spring 2025!" : "Fall 2024!";
-        const range = isFiveRows ? `${rangeBase}B3:F9` : `${rangeBase}B23:F39`;
-        const bgColorRange = isFiveRows ? `${rangeBase}G3:G9` : `${rangeBase}G23:G39`;
+        const sheetName = document.getElementById("sheetSelector").value;
+        const rangeBase = `${sheetName}!`;
+        const range = isFiveRows ? `${rangeBase}B3:F9` : `${rangeBase}B23:F40`;
+        const bgColorRange = isFiveRows
+          ? `${rangeBase}G3:G9`
+          : `${rangeBase}G23:G40`;
         const captionRange = isFiveRows
           ? `${rangeBase}H3:H9`
-          : `${rangeBase}H23:H39`;
-      
+          : `${rangeBase}H23:H40`;
+
         Promise.all([
           gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: "1mKlLdSUxp6iQzzhMFGRPh595tRr2Va2O-z1AkWVs3-A",
@@ -372,11 +425,15 @@
             const valuesResponse = responses[0];
             const bgColorsResponse = responses[1];
             const captionsResponse = responses[2];
-      
+
             const values = valuesResponse.result.values;
-            const bgColors = bgColorsResponse.result.values.map((row) => row[0]);
-            const captions = captionsResponse.result.values.map((row) => row[0]);
-      
+            const bgColors = bgColorsResponse.result.values.map(
+              (row) => row[0]
+            );
+            const captions = captionsResponse.result.values.map(
+              (row) => row[0]
+            );
+
             if (values.length > 0) {
               callback({ values, bgColors, captions });
             } else {
@@ -387,20 +444,20 @@
             console.log("Error: " + error.result.error.message);
           });
       }
-      
+
       function toggleRows() {
         const isChecked = document.getElementById("dialogueToggle").checked;
         const labelText = isChecked ? "with Dialogues" : "without Dialogues";
         const labelElement = document.getElementById("toggleLabel");
-      
+
         labelElement.innerHTML = randomizeFont(labelText);
-      
+
         if (isChecked) {
           labelElement.style.color = "white";
         } else {
           labelElement.style.color = "yellow";
         }
-      
+
         populateRows(
           isChecked ? dataForSixteenRows : dataForFiveRows,
           isChecked ? bgColorsWithDialogues : bgColorsWithoutDialogues,
@@ -409,7 +466,7 @@
         );
         adjustRowHeight();
       }
-      
+
       function adjustRowHeight() {
         const isChecked = document.getElementById("dialogueToggle").checked;
         const numberOfRows = isChecked ? 16 : 5;
@@ -419,7 +476,7 @@
           row.style.height = rowHeight;
         });
       }
-      
+
       function showPreview(src, caption) {
         const imgPreview = document.getElementById("imgPreview");
         const imgCaption = document.getElementById("imgCaption");
@@ -427,11 +484,11 @@
         imgCaption.innerHTML = randomizeFont(caption);
         document.getElementById("previewContainer").style.display = "block";
       }
-      
+
       function hidePreview() {
         document.getElementById("previewContainer").style.display = "none";
       }
-      
+
       function randomizeFont(text) {
         return text
           .split("")
@@ -443,7 +500,7 @@
           })
           .join("");
       }
-      
+
       function randomizeFontForElement(element) {
         const children = Array.from(element.childNodes);
         children.forEach((child) => {
@@ -456,7 +513,7 @@
           }
         });
       }
-      
+
       function populateRows(data, bgColors, captions, isFiveRows) {
         const tabContent = document.getElementById("tab1");
         tabContent.innerHTML = "";
@@ -469,7 +526,7 @@
             divCol.className = isFiveRows
               ? "column col" + (colIndex + 1)
               : "column col" + (colIndex + 1);
-      
+
             if (
               colIndex === 0 &&
               (value.endsWith(".png") || value.endsWith(".jpg"))
@@ -488,40 +545,49 @@
           tabContent.appendChild(divRow);
         });
       }
-      
+
       function applyRandomFontToTitle() {
         const titleElement = document.getElementById("title");
         randomizeFontForElement(titleElement);
       }
-      
+
       function applyRandomFontToLabels() {
         const label1 = document.getElementById("toggleLabel");
         randomizeFontForElement(label1);
       }
-      
+
       function updateSheetSelection() {
         const selector = document.getElementById("sheetSelector");
         currentSheet = selector.value;
-        applyRandomFontToDropdown(selector);
-        fetchAllData(); // Refetch data based on the selected sheet
+
+        document.getElementById("dialogueToggle").checked = false;
+        document.getElementById("toggleLabel").innerHTML =
+          randomizeFont("without Dialogues");
+        document.getElementById("toggleLabel").style.color = "yellow";
+
+        dataForFiveRows = null;
+        dataForSixteenRows = null;
+        captionsForFiveRows = null;
+        captionsForSixteenRows = null;
+
+        fetchAllData();
       }
-      
+
       function applyRandomFontToDropdown(selector) {
         Array.from(selector.options).forEach((option) => {
           option.innerHTML = randomizeFont(option.textContent);
         });
       }
-      
+
       window.onload = function () {
         loadSheetsApi();
         applyRandomFontToTitle();
         applyRandomFontToLabels();
         const selector = document.getElementById("sheetSelector");
-        applyRandomFontToDropdown(selector); // Apply random font to dropdown on load
+        applyRandomFontToDropdown(selector);
         window.addEventListener("resize", adjustRowHeight);
         adjustRowHeight();
       };
-      
     </script>
   </body>
 </html>
