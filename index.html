@@ -50,11 +50,11 @@
 
       .dropdown {
         font-size: 16px;
-        background-color: dodgerblue; /* changed */
+        background-color: skyblue;
         border-radius: 20px;
         padding: 5px;
         cursor: pointer;
-        color: white;
+        color: black;
       }
 
       .tabs > span {
@@ -79,7 +79,7 @@
         display: flex;
         font-size: 16px;
         line-height: 1.5;
-        color: dodgerblue; /* changed */
+        color: skyblue;
       }
 
       .checkbox {
@@ -87,7 +87,7 @@
         appearance: none;
         width: 50px;
         height: 30px;
-        background-color: dodgerblue; /* changed */
+        background-color: skyblue;
         border-radius: 20px;
         position: relative;
         outline: none;
@@ -116,7 +116,7 @@
       }
 
       .checkbox:hover {
-        background-color: dodgerblue; /* changed */
+        background-color: skyblue;
       }
 
       .checkbox:checked:hover {
@@ -200,11 +200,11 @@
         transform: translateX(-50%);
         white-space: nowrap;
         text-align: center;
-        color: dodgerblue; /* changed */
+        color: skyblue;
       }
 
       .toggle-label {
-        color: dodgerblue; /* changed */
+        color: skyblue;
       }
 
       @media (max-width: 768px) {
@@ -260,7 +260,7 @@
         width: 50px;
         height: 50px;
         border: 15px solid black;
-        border-top: 25px solid dodgerblue; /* changed */
+        border-top: 25px solid skyblue;
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
@@ -276,7 +276,7 @@
 
       #imgCaption {
         background-color: black;
-        color: dodgerblue; /* changed */
+        color: skyblue;
         font-size: 16px;
         padding: 5px 10px;
         border-radius: 25px;
@@ -302,7 +302,7 @@
           class="dropdown"
           onchange="updateSheetSelection()"
         >
-          <option value="Sheet3">Fall 2025</option> <!-- NEW -->
+          <option value="Sheet3">Fall 2025</option>
           <option value="Sheet2">Spring 2025</option>
           <option value="Sheet1">Fall 2024</option>
         </select>
@@ -458,7 +458,7 @@
         if (isChecked) {
           labelElement.style.color = "white";
         } else {
-          labelElement.style.color = "dodgerblue";
+          labelElement.style.color = "skyblue";
         }
 
         populateRows(
@@ -566,7 +566,7 @@
         document.getElementById("dialogueToggle").checked = false;
         document.getElementById("toggleLabel").innerHTML =
           randomizeFont("without Dialogues");
-        document.getElementById("toggleLabel").style.color = "dodgerblue";
+        document.getElementById("toggleLabel").style.color = "skyblue";
 
         dataForFiveRows = null;
         dataForSixteenRows = null;
