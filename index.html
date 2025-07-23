@@ -50,10 +50,11 @@
 
       .dropdown {
         font-size: 16px;
-        background-color: yellow;
+        background-color: dodgerblue; /* changed */
         border-radius: 20px;
         padding: 5px;
         cursor: pointer;
+        color: white;
       }
 
       .tabs > span {
@@ -78,6 +79,7 @@
         display: flex;
         font-size: 16px;
         line-height: 1.5;
+        color: dodgerblue; /* changed */
       }
 
       .checkbox {
@@ -85,7 +87,7 @@
         appearance: none;
         width: 50px;
         height: 30px;
-        background-color: yellow;
+        background-color: dodgerblue; /* changed */
         border-radius: 20px;
         position: relative;
         outline: none;
@@ -114,7 +116,7 @@
       }
 
       .checkbox:hover {
-        background-color: yellow;
+        background-color: dodgerblue; /* changed */
       }
 
       .checkbox:checked:hover {
@@ -198,13 +200,13 @@
         transform: translateX(-50%);
         white-space: nowrap;
         text-align: center;
-        color: yellow;
+        color: dodgerblue; /* changed */
       }
 
       .toggle-label {
-        color: yellow;
+        color: dodgerblue; /* changed */
       }
-      
+
       @media (max-width: 768px) {
         body {
           overflow-y: scroll;
@@ -258,7 +260,7 @@
         width: 50px;
         height: 50px;
         border: 15px solid black;
-        border-top: 25px solid yellow;
+        border-top: 25px solid dodgerblue; /* changed */
         border-radius: 50%;
         animation: spin 1s linear infinite;
       }
@@ -274,9 +276,9 @@
 
       #imgCaption {
         background-color: black;
-        color: yellow;
+        color: dodgerblue; /* changed */
         font-size: 16px;
-        padding: 5px 10px; /* Padding around the text */
+        padding: 5px 10px;
         border-radius: 25px;
         text-align: center;
         font-family: "Times New Roman", serif;
@@ -300,6 +302,7 @@
           class="dropdown"
           onchange="updateSheetSelection()"
         >
+          <option value="Sheet3">Fall 2025</option> <!-- NEW -->
           <option value="Sheet2">Spring 2025</option>
           <option value="Sheet1">Fall 2024</option>
         </select>
@@ -333,7 +336,7 @@
         "'Lucida Handwriting', cursive",
       ];
 
-      let currentSheet = "Spring 2025";
+      let currentSheet = "Fall 2025";
 
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
@@ -455,7 +458,7 @@
         if (isChecked) {
           labelElement.style.color = "white";
         } else {
-          labelElement.style.color = "yellow";
+          labelElement.style.color = "dodgerblue";
         }
 
         populateRows(
@@ -563,7 +566,7 @@
         document.getElementById("dialogueToggle").checked = false;
         document.getElementById("toggleLabel").innerHTML =
           randomizeFont("without Dialogues");
-        document.getElementById("toggleLabel").style.color = "yellow";
+        document.getElementById("toggleLabel").style.color = "dodgerblue";
 
         dataForFiveRows = null;
         dataForSixteenRows = null;
