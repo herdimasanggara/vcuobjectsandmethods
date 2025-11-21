@@ -298,14 +298,16 @@
     <div class="tabs">
       <div class="dropdown-container">
         <select
-          id="sheetSelector"
-          class="dropdown"
-          onchange="updateSheetSelection()"
-        >
-          <option value="Sheet3">Fall 2025</option>
-          <option value="Sheet2">Spring 2025</option>
-          <option value="Sheet1">Fall 2024</option>
-        </select>
+        id="sheetSelector"
+        class="dropdown"
+        onchange="updateSheetSelection()"
+      >
+        <option value="Sheet4">Spring 2026</option>
+        <option value="Sheet3">Fall 2025</option>
+        <option value="Sheet2">Spring 2025</option>
+        <option value="Sheet1">Fall 2024</option>
+      </select>
+      
       </div>
       <div class="title-container">
         <span id="title">VCU GDES ☞ Objects + Methods</span>
@@ -336,7 +338,7 @@
         "'Lucida Handwriting', cursive",
       ];
 
-      let currentSheet = "Fall 2025";
+      let currentSheet = "Spring 2026";
 
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
