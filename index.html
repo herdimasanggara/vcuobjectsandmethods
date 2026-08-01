@@ -15,7 +15,7 @@
     <style>
       body,
       button {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Times New Roman", Times, serif;
       }
 
       body {
@@ -277,7 +277,7 @@
         padding: 5px 10px;
         border-radius: 25px;
         text-align: center;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: "Times New Roman", Times, serif;
         display: block;
         margin-top: 5px;
         width: max-content;
@@ -328,14 +328,13 @@
       let bgColorsWithoutDialogues = [];
       let bgColorsWithDialogues = [];
       const fonts = [
-        "Arial, Helvetica, sans-serif",
-        "Verdana, Geneva, sans-serif",
-        "Tahoma, Geneva, sans-serif",
-        "'Trebuchet MS', 'Lucida Grande', sans-serif",
+        "'Times New Roman', Times, serif",
+        "Georgia, 'Times New Roman', serif",
+        "Garamond, Baskerville, 'Hoefler Text', 'Times New Roman', serif",
       ];
 
       const TARGET_PX = 16;
-      const fallbackXHeightRatios = [0.519, 0.545, 0.546, 0.523];
+      const fallbackXHeightRatios = [0.448, 0.481, 0.383];
       let fontSizes = fonts.map(() => TARGET_PX);
       let lineHeightPx = TARGET_PX * 1.5;
 
