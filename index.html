@@ -12,10 +12,43 @@
     <meta property="og:url" content="https://objectsandmethods.com/" />
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
     <title>Objects + Methods</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Princess+Sofia&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      /* bevel colours and thickness: change these to restyle it everywhere.
+         Four shades, lit from the top left, so the mitred corners read as raised. */
+      :root {
+        --bevel-top: #f9c4f9;
+        --bevel-left: violet;
+        --bevel-right: mediumorchid;
+        --bevel-bottom: darkorchid;
+        --bevel-size: 6px;
+        /* one text size for the header, controls and rows; follows the window */
+        --fs: clamp(15px, min(2.8vw, 4.8vh), 44px);
+        /* 16 rows on screen only leave room for a smaller size */
+        --fs-dense: clamp(12px, min(1.8vw, 2.4vh), 26px);
+        --header-h: clamp(76px, 12.5vh, 110px);
+        /* dropdown and toggle height follows the text size */
+        --ctl: calc(var(--fs) * 1.3 + var(--bevel-size) * 2 + 6px);
+        --link: darkorchid;
+      }
+
       body,
-      button {
-        font-family: "Times New Roman", Times, serif;
+      button,
+      select {
+        font-family: "Princess Sofia", "Times New Roman", Times, serif;
+        font-size: var(--fs);
+        line-height: 1.25;
+        /* stroke for weight, so the text reads bigger; scales with the text */
+        -webkit-text-stroke: 0.032em currentColor;
+        /* manual tracking: a little air so the stroked letters don't touch */
+        letter-spacing: 0.02em;
+        word-spacing: 0.08em;
+        font-kerning: normal;
       }
 
       body {
@@ -31,8 +64,8 @@
         display: flex;
         background-color: black;
         color: white;
-        overflow: hidden;
-        height: 70px;
+        height: var(--header-h);
+        flex-shrink: 0;
         align-items: center;
         padding: 0 10px;
         position: relative;
@@ -45,10 +78,23 @@
       }
 
       .dropdown {
-        font-size: 16px;
+        font-size: var(--fs);
         background-color: palegreen;
-        border-radius: 20px;
-        padding: 5px;
+        border-radius: 999px;
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        box-sizing: border-box;
+        height: var(--ctl);
+        line-height: 1.3;
+        margin: 0;
+        padding: 0 0.7em;
+        border-radius: 999px;
+        text-align: center;
+        text-align-last: center;
+        outline: none;
         cursor: pointer;
         color: black;
       }
@@ -72,19 +118,26 @@
       .toggle-label {
         margin-right: 10px;
         user-select: none;
-        display: flex;
-        font-size: 16px;
-        line-height: 1.5;
+        display: block;
+        white-space: nowrap;
+        font-size: var(--fs);
+        line-height: 1.1;
         color: palegreen;
       }
 
       .checkbox {
         -webkit-appearance: none;
         appearance: none;
-        width: 50px;
-        height: 30px;
+        box-sizing: border-box;
+        flex-shrink: 0;
+        width: calc(var(--ctl) * 1.7);
+        height: var(--ctl);
+        margin: 0;
+        padding: 0;
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
         background-color: palegreen;
-        border-radius: 20px;
+        border-radius: 999px;
         position: relative;
         outline: none;
         cursor: pointer;
@@ -98,17 +151,19 @@
       .checkbox:before {
         content: "";
         position: absolute;
-        top: 2px;
-        left: 2px;
-        width: 26px;
-        height: 26px;
-        background-color: #000;
-        border-radius: 50%;
+        --knob: calc(var(--ctl) - var(--bevel-size) * 2 - 8px);
+        top: 4px;
+        left: 4px;
+        width: var(--knob);
+        height: var(--knob);
+        /* the knob is a round-cut gem seen from above: a decagon of flat
+           black, grey and white facets */
+        background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cpolygon fill=%22%23000%22 points=%22100.0,50.0 90.5,79.4 77.6,59.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,59.0 90.5,79.4 67.0,73.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2290.5,79.4 65.5,97.6 67.0,73.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2267.0,73.5 65.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2265.5,97.6 34.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2250.0,79.0 34.5,97.6 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2234.5,97.6 9.5,79.4 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2233.0,73.5 9.5,79.4 22.4,59.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%229.5,79.4 0.0,50.0 22.4,59.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2222.4,59.0 0.0,50.0 22.4,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%220.0,50.0 9.5,20.6 22.4,41.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2222.4,41.0 9.5,20.6 33.0,26.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%229.5,20.6 34.5,2.4 33.0,26.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2233.0,26.5 34.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2234.5,2.4 65.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2250.0,21.0 65.5,2.4 67.0,26.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2265.5,2.4 90.5,20.6 67.0,26.5%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2267.0,26.5 90.5,20.6 77.6,41.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2290.5,20.6 100.0,50.0 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,41.0 100.0,50.0 77.6,59.0%22/%3E%3Cpolygon fill=%22%23151515%22 points=%2277.6,59.0 67.0,73.5 50.0,79.0 33.0,73.5 22.4,59.0 22.4,41.0 33.0,26.5 50.0,21.0 67.0,26.5 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2222.4,41.0 33.0,26.5 42.7,44.7%22/%3E%3C/svg%3E") center / contain no-repeat;
         transition: transform 0.2s ease;
       }
 
       .checkbox:checked:before {
-        transform: translateX(20px);
+        transform: translateX(calc(var(--ctl) * 0.7));
       }
 
       .checkbox:hover {
@@ -123,17 +178,61 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        overflow: hidden;
-        height: calc(100% - 70px);
+        height: calc(100% - var(--header-h));
+        /* black mortar between the bricks */
+        background-color: black;
+        gap: 2px;
+      }
+
+      .tab-content.dense .row {
+        line-height: 1.2;
+      }
+
+      .tab-content.dense .column {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      /* desktop-only layout for the 16-row view */
+      @media (min-width: 769px) {
+        .tab-content .row {
+          font-size: var(--fit, var(--fs));
+        }
+
+        .tab-content.dense .row {
+          font-size: var(--fit, var(--fs-dense));
+        }
+
+        /* 16 rows leave room for one line: give the title more width.
+           If a line is too long, fitRowText() shrinks the text; nothing is cut */
+        .tab-content.dense .col4 {
+          flex: 4;
+        }
+
+        .tab-content.dense .column > div {
+          max-width: 100%;
+          white-space: nowrap;
+          /* room above and below so descenders (g, y, p) aren't clipped */
+          padding: 0.1em 0;
+        }
+
+      }
+
+      a,
+      a:visited {
+        color: var(--link);
       }
 
       .row {
-        border-bottom: 1px solid black;
+        box-sizing: border-box;
+        /* black mortar between the cells; each cell is its own brick */
+        background-color: black;
+        gap: 2px;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: space-around;
         flex-grow: 1;
-        overflow: hidden;
+        min-height: 0;
       }
 
       .column,
@@ -143,7 +242,29 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-        padding-right: 5px;
+        padding: 6px 10px;
+        box-sizing: border-box;
+        background-color: var(--row-color, #ffffff);
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
+        min-height: 0;
+        min-width: 0;
+      }
+
+      /* text is never clipped: it may spill past its cell, and sits above
+         every cell background so a neighbour can't cover it */
+      .column > div {
+        position: relative;
+        z-index: 1;
+      }
+
+      .row img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        min-height: 0;
+        object-fit: contain;
       }
 
       .col1,
@@ -152,6 +273,63 @@
       .col5 {
         flex: 1;
       }
+
+      /* exaggerated capitals: bigger than the text around them, without
+         pushing the lines apart */
+      .swash {
+        font-size: 1.45em;
+        line-height: 0;
+        margin: 0 -0.03em;
+      }
+
+      .title-container .amp {
+        color: violet;
+        /* exaggerated like the capitals, without pushing the line taller */
+        font-size: 1.6em;
+        line-height: 0;
+        /* hand-kerned so the space on each side looks equal */
+        margin-left: -0.1em;
+        margin-right: 0.06em;
+        /* dropped so its middle lines up with the middle of the two words */
+        position: relative;
+        top: 0.19em;
+      }
+
+      /* headroom so the taller capitals on a cell's first line aren't cut */
+      .column > div {
+        padding: 0.24em 0;
+      }
+
+      .tab-content.dense .swash {
+        font-size: 1.22em;
+      }
+
+      /* text cells are rounded to go with the curvy type; poster cells stay square */
+      .column:not(.has-image) {
+        border-radius: 16px;
+      }
+
+      .tab-content.dense .column:not(.has-image) {
+        border-radius: 12px;
+      }
+
+      /* a cell holding a poster shrinks to wrap it; its width is set in
+         sizeImageCells() from the poster's proportions */
+      .column.has-image {
+        overflow: hidden;
+        flex: 0 0 auto;
+        max-width: 40%;
+        padding: 0;
+      }
+
+      .column.has-image img {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+      }
+
+
 
       .col4 {
         flex: 3;
@@ -178,10 +356,20 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 70vw;
-        height: 70vh;
         z-index: 5;
-        text-align: center;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        pointer-events: none;
+      }
+
+      /* enlarged poster: bevelled like the cells; sized in showPreview() */
+      #imgPreview {
+        display: block;
+        box-sizing: content-box;
+        max-width: none;
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
       }
 
       .caption {
@@ -196,6 +384,7 @@
         transform: translateX(-50%);
         white-space: nowrap;
         text-align: center;
+        line-height: 1.08;
         color: palegreen;
       }
 
@@ -204,6 +393,11 @@
       }
 
       @media (max-width: 768px) {
+        :root {
+          --fs: clamp(17px, 5.6vw, 27px);
+          --header-h: 76px;
+        }
+
         body {
           overflow-y: scroll;
           overflow-x: none;
@@ -237,6 +431,55 @@
           display: flex;
           padding: 10px;
         }
+
+        /* rows grow to fit their text instead of clipping it */
+        .tab-content {
+          flex: none;
+          height: auto;
+          overflow: visible;
+        }
+
+        .row,
+        .tab-content.dense .row {
+          flex: none;
+          height: auto !important;
+          min-height: 64px;
+          overflow: visible;
+          font-size: var(--fs);
+          line-height: 1.2;
+        }
+
+        .row .column {
+          overflow: visible;
+        }
+
+      }
+
+      /* decorative gems: scattered over the page, never clickable */
+      #gems {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        pointer-events: none;
+        /* above the cell colours and posters, below all text and controls */
+        z-index: 0;
+      }
+
+      .title-container,
+      .toggle-container {
+        z-index: 1;
+      }
+
+      #gems svg {
+        position: absolute;
+        display: block;
+        overflow: visible;
+        /* matched to the toggle's gem knob (a touch wider, since a diamond
+           tapers to a point and reads smaller at the same width) */
+        width: calc((var(--ctl) - var(--bevel-size) * 2 - 8px) * 1.2);
       }
 
       .loading-screen {
@@ -253,12 +496,13 @@
       }
 
       .spinner {
-        width: 50px;
-        height: 50px;
-        border: 15px solid black;
-        border-top: 25px solid palegreen;
+        box-sizing: border-box;
+        width: 56px;
+        height: 56px;
+        border: 6px solid #333;
+        border-top-color: palegreen;
         border-radius: 50%;
-        animation: spin 1s linear infinite;
+        animation: spin 0.9s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
       }
 
       @keyframes spin {
@@ -273,16 +517,18 @@
       #imgCaption {
         background-color: black;
         color: palegreen;
-        font-size: 16px;
-        padding: 5px 10px;
-        border-radius: 25px;
+        font-size: var(--fs);
+        padding: 5px 16px;
+        border-radius: 999px;
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
         text-align: center;
-        font-family: "Times New Roman", Times, serif;
+        font-family: inherit;
         display: block;
-        margin-top: 5px;
+        margin: 0;
         width: max-content;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: 90vw;
+        box-sizing: border-box;
       }
     </style>
     <script src="https://apis.google.com/js/api.js"></script>
@@ -298,6 +544,7 @@
         class="dropdown"
         onchange="updateSheetSelection()"
       >
+        <option value="Sheet6">Spring 2027</option>
         <option value="Sheet5">Fall 2026</option>
         <option value="Sheet4">Spring 2026</option>
         <option value="Sheet3">Fall 2025</option>
@@ -307,7 +554,7 @@
       
       </div>
       <div class="title-container">
-        <span id="title">VCU GDES ☞ Objects + Methods</span>
+        <span id="title">Objects <span class="amp">&amp;</span> Methods</span>
       </div>
       <div class="toggle-container" onclick="toggleRows()">
         <span id="toggleLabel" class="toggle-label">without Dialogues</span>
@@ -315,6 +562,7 @@
       </div>
     </div>
     <div id="tab1" class="tab-content"></div>
+    <div id="gems" aria-hidden="true"></div>
     <div id="previewContainer" class="preview-container">
       <img id="imgPreview" class="preview" />
       <div id="imgCaption" class="caption"></div>
@@ -327,42 +575,7 @@
       let captionsForSixteenRows = null;
       let bgColorsWithoutDialogues = [];
       let bgColorsWithDialogues = [];
-      const fonts = [
-        "'Times New Roman', Times, serif",
-        "Georgia, 'Times New Roman', serif",
-        "Garamond, Baskerville, 'Hoefler Text', 'Times New Roman', serif",
-      ];
-
-      const TARGET_PX = 16;
-      const fallbackXHeightRatios = [0.448, 0.481, 0.383];
-      let fontSizes = fonts.map(() => TARGET_PX);
-      let lineHeightPx = TARGET_PX * 1.5;
-
-      function calibrateFontSizes() {
-        const refSize = 200;
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-
-        const ratios = fonts.map((font, i) => {
-          ctx.font = refSize + "px " + font;
-          const m = ctx.measureText("x");
-          const ascent = m.actualBoundingBoxAscent;
-          if (ascent && ascent > 0) {
-            return ascent / refSize;
-          }
-          return fallbackXHeightRatios[i];
-        });
-
-        const avgRatio =
-          ratios.reduce((a, b) => a + b, 0) / ratios.length;
-        const targetXHeight = avgRatio * TARGET_PX;
-
-        fontSizes = ratios.map((r) => targetXHeight / r);
-
-        lineHeightPx = TARGET_PX * 1.5;
-      }
-
-      let currentSheet = "Fall 2026";
+      let currentSheet = "Spring 2027";
 
       function loadSheetsApi() {
         gapi.load("client", initializeSheetsApi);
@@ -455,11 +668,11 @@
             const bgColorsResponse = responses[1];
             const captionsResponse = responses[2];
 
-            const values = valuesResponse.result.values;
-            const bgColors = bgColorsResponse.result.values.map(
+            const values = valuesResponse.result.values || [];
+            const bgColors = (bgColorsResponse.result.values || []).map(
               (row) => row[0]
             );
-            const captions = captionsResponse.result.values.map(
+            const captions = (captionsResponse.result.values || []).map(
               (row) => row[0]
             );
 
@@ -479,7 +692,8 @@
         const labelText = isChecked ? "with Dialogues" : "without Dialogues";
         const labelElement = document.getElementById("toggleLabel");
 
-        labelElement.innerHTML = randomizeFont(labelText);
+        labelElement.textContent = labelText;
+        swashify(labelElement);
 
         if (isChecked) {
           labelElement.style.color = "white";
@@ -504,87 +718,180 @@
         rowElements.forEach((row) => {
           row.style.height = rowHeight;
         });
+        sizeImageCells();
+        fitRowText();
       }
 
       function showPreview(src, caption) {
         const imgPreview = document.getElementById("imgPreview");
         const imgCaption = document.getElementById("imgCaption");
+        imgCaption.innerHTML = caption || "";
+        swashify(imgCaption);
+        imgCaption.style.display = caption ? "block" : "none";
+        // size the poster to fill up to 70% of the window, keeping its shape,
+        // so the bevel wraps the picture exactly
+        const fit = () => {
+          if (!imgPreview.naturalWidth) return;
+          const scale = Math.min(
+            (window.innerWidth * 0.7) / imgPreview.naturalWidth,
+            (window.innerHeight * 0.7) / imgPreview.naturalHeight
+          );
+          imgPreview.style.width = imgPreview.naturalWidth * scale + "px";
+          imgPreview.style.height = imgPreview.naturalHeight * scale + "px";
+        };
+        imgPreview.onload = fit;
         imgPreview.src = src;
-        imgCaption.innerHTML = randomizeFont(caption);
-        document.getElementById("previewContainer").style.display = "block";
+        fit();
+        document.getElementById("previewContainer").style.display = "flex";
       }
 
       function hidePreview() {
         document.getElementById("previewContainer").style.display = "none";
       }
 
-      function randomizeFont(text) {
-        return text
-          .split("")
-          .map((char) => {
-            const idx = Math.floor(Math.random() * fonts.length);
-            const randomFont = fonts[idx];
-            const size = fontSizes[idx].toFixed(2);
-            return `<span style="font-family: ${randomFont}; font-size: ${size}px; line-height: ${lineHeightPx}px; vertical-align: baseline;">${
-              char === " " ? "&nbsp;" : char
-            }</span>`;
-          })
-          .join("");
+      // "Thursday, September 16" -> "Sep 16". Only text is touched, never
+      // tags or link addresses. Used on the narrow columns, not the title column.
+      const LONG_NAMES =
+        /\b(January|February|March|April|June|July|August|September|October|November|December)\b/g;
+      // weekdays are dropped: full names always, short ones ("Thu", "Thurs.")
+      // only when a date follows, so a word like "Sun" elsewhere is left alone
+      const WEEKDAYS =
+        /\b(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day\b[.,]?\s*|\b(Mon|Tues?|Wed|Thu(rs?)?|Fri|Sat|Sun)\b[.,]?\s*(?=(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d))/g;
+
+      // "12:30 pm ET" -> "12:30": drop the time zone, and drop am/pm after a
+      // time that has minutes. A bare hour such as "6 pm" keeps its am/pm.
+      const TIME_ZONE = /\s*\(?\b(ET|EST|EDT)\b\)?/g;
+      const AM_PM = /(\d{1,2}:\d{2})\s*[ap]\.?m\.?/gi;
+
+      function shortenDates(element) {
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        let node;
+        while ((node = walker.nextNode())) {
+          node.textContent = node.textContent
+            .replace(WEEKDAYS, "")
+            .replace(LONG_NAMES, (word) => word.slice(0, 3))
+            .replace(TIME_ZONE, "")
+            .replace(AM_PM, "$1")
+            // hand-kern the colon in times: a hair of space on each side
+            .replace(/(\d):(\d)/g, "$1\u200A:\u200A$2");
+        }
       }
 
-      function randomizeFontForElement(element) {
-        const children = Array.from(element.childNodes);
-        children.forEach((child) => {
-          if (child.nodeType === Node.TEXT_NODE) {
-            const span = document.createElement("span");
-            span.innerHTML = randomizeFont(child.textContent);
-            element.replaceChild(span, child);
-          } else if (child.nodeType === Node.ELEMENT_NODE) {
-            randomizeFontForElement(child);
-          }
+      // Princess Sofia has no built-in swash alternates, so the flourish is
+      // exaggerated by hand: the capital that starts each word is set larger
+      // (see .swash in the stylesheet). All-caps words such as "ICA" are left
+      // alone. Only text is touched, never tags.
+      function swashify(element) {
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        let node;
+        while ((node = walker.nextNode())) nodes.push(node);
+        nodes.forEach((textNode) => {
+          if (textNode.parentElement.classList.contains("swash")) return;
+          const parts = textNode.textContent.split(/(?<![\p{L}\p{N}])(\p{Lu})(?!\p{Lu})/u);
+          if (parts.length < 2) return;
+          const fragment = document.createDocumentFragment();
+          parts.forEach((part, i) => {
+            if (i % 2) {
+              const span = document.createElement("span");
+              span.className = "swash";
+              span.textContent = part;
+              fragment.appendChild(span);
+            } else if (part) {
+              fragment.appendChild(document.createTextNode(part));
+            }
+          });
+          textNode.replaceWith(fragment);
         });
+      }
+
+      // Row text starts at the stylesheet size. If any cell's text is taller
+      // than its cell, shrink all row text together until everything fits, so
+      // nothing is ever cut off and every cell keeps the same size.
+      function fitRowText() {
+        const tab = document.getElementById("tab1");
+        tab.style.removeProperty("--fit");
+        if (window.innerWidth <= 768) return; // phone rows grow instead
+        const row = tab.querySelector(".row");
+        if (!row) return;
+        let size = parseFloat(getComputedStyle(row).fontSize);
+        const overflows = () =>
+          Array.from(tab.querySelectorAll(".column > div")).some((inner) => {
+            const cell = inner.parentElement;
+            const cs = getComputedStyle(cell);
+            const room =
+              cell.clientHeight -
+              parseFloat(cs.paddingTop) -
+              parseFloat(cs.paddingBottom);
+            const tooWide = inner.scrollWidth > inner.clientWidth + 1;
+            return tooWide || inner.offsetHeight > room + 0.5;
+          });
+        while (size > 8 && overflows()) {
+          size -= 1;
+          tab.style.setProperty("--fit", size + "px");
+        }
+      }
+
+      // make each poster cell exactly as wide as its poster at the row's height
+      function sizeImageCells() {
+        document.querySelectorAll(".column.has-image").forEach((cell) => {
+          const img = cell.querySelector("img");
+          if (!img || !img.naturalWidth || !img.naturalHeight) return;
+          const bevel = cell.offsetHeight - cell.clientHeight;
+          const width =
+            (cell.clientHeight * img.naturalWidth) / img.naturalHeight + bevel;
+          cell.style.flexBasis = width + "px";
+        });
+        fitRowText();
       }
 
       function populateRows(data, bgColors, captions, isFiveRows) {
         const tabContent = document.getElementById("tab1");
         tabContent.innerHTML = "";
+        tabContent.classList.toggle("dense", !isFiveRows);
         data.forEach((row, index) => {
           const divRow = document.createElement("div");
           divRow.className = "row";
-          divRow.style.backgroundColor = bgColors[index] || "#ffffff";
-          row.forEach((value, colIndex) => {
+          divRow.style.setProperty("--row-color", bgColors[index] || "#ffffff");
+          // the Sheets API drops trailing empty cells, so pad every row to 5
+          const cells = [];
+          for (let c = 0; c < 5; c++) {
+            cells.push(row[c] === undefined || row[c] === null ? "" : String(row[c]));
+          }
+          cells.forEach((value, colIndex) => {
             const divCol = document.createElement("div");
-            divCol.className = isFiveRows
-              ? "column col" + (colIndex + 1)
-              : "column col" + (colIndex + 1);
+            divCol.className = "column col" + (colIndex + 1);
+            const lower = value.trim().toLowerCase();
+
+            // an empty cell in the sheet is left out; its neighbours fill the space
+            if (value.trim() === "") return;
 
             if (
               colIndex === 0 &&
-              (value.endsWith(".png") || value.endsWith(".jpg"))
+              (lower.endsWith(".png") ||
+                lower.endsWith(".jpg") ||
+                lower.endsWith(".jpeg"))
             ) {
               const img = document.createElement("img");
-              img.src = value;
+              img.src = value.trim();
+              img.onload = sizeImageCells;
               img.onmouseover = () => showPreview(img.src, captions[index]);
               img.onmouseout = hidePreview;
+              divCol.classList.add("has-image");
               divCol.appendChild(img);
             } else {
-              divCol.innerHTML = value;
-              randomizeFontForElement(divCol);
+              // wrap in one block so text and links flow together on a line
+              const inner = document.createElement("div");
+              inner.innerHTML = value;
+              if (colIndex !== 3) shortenDates(inner);
+              swashify(inner);
+              divCol.appendChild(inner);
             }
             divRow.appendChild(divCol);
           });
-          tabContent.appendChild(divRow);
+          // a row with nothing in it is left out too
+          if (divRow.children.length) tabContent.appendChild(divRow);
         });
-      }
-
-      function applyRandomFontToTitle() {
-        const titleElement = document.getElementById("title");
-        randomizeFontForElement(titleElement);
-      }
-
-      function applyRandomFontToLabels() {
-        const label1 = document.getElementById("toggleLabel");
-        randomizeFontForElement(label1);
       }
 
       function updateSheetSelection() {
@@ -592,8 +899,9 @@
         currentSheet = selector.value;
 
         document.getElementById("dialogueToggle").checked = false;
-        document.getElementById("toggleLabel").innerHTML =
-          randomizeFont("without Dialogues");
+        document.getElementById("toggleLabel").textContent =
+          "without Dialogues";
+        swashify(document.getElementById("toggleLabel"));
         document.getElementById("toggleLabel").style.color = "palegreen";
 
         dataForFiveRows = null;
@@ -604,27 +912,95 @@
         fetchAllData();
       }
 
-      function applyRandomFontToDropdown(selector) {
-        Array.from(selector.options).forEach((option) => {
-          option.innerHTML = randomizeFont(option.textContent);
-        });
+      // ---- gems -----------------------------------------------------------
+      // A fixed scatter of identical diamonds, placed at random once when the
+      // page loads. They stay put, ignore the mouse, and every so often one
+      // shows a white sparkle for a moment (shown and hidden instantly).
+      const GEM_COUNT = 9;
+      // facets mix the page's purples and greens
+      const GEM_FACETS = [
+        ["violet", "0,30 25,0 33,30"],
+        ["#e3ffe3", "25,0 50,0 33,30"],
+        ["palegreen", "50,0 33,30 67,30"],
+        ["#f9c4f9", "50,0 75,0 67,30"],
+        ["#5fd35f", "75,0 100,30 67,30"],
+        ["#2e9e4f", "0,30 33,30 50,90"],
+        ["mediumorchid", "33,30 67,30 50,90"],
+        ["darkorchid", "67,30 100,30 50,90"],
+      ];
+      // four-point star, centred on 0,0
+      const SPARKLE_POINTS = "0,-22 4,-4 22,0 4,4 0,22 -4,4 -22,0 -4,-4";
+      // spots on the diamond where a sparkle can land
+      const SPARKLE_SPOTS = [
+        [28, 12],
+        [62, 14],
+        [82, 28],
+        [45, 48],
+      ];
+
+      function startGems() {
+        const layer = document.getElementById("gems");
+        const ns = "http://www.w3.org/2000/svg";
+        const placed = [];
+        const sparkles = [];
+
+        for (let i = 0; i < GEM_COUNT; i++) {
+          // pick a spot that isn't on top of another diamond
+          let x, y, tries = 0;
+          do {
+            x = 3 + Math.random() * 90;
+            y = 3 + Math.random() * 88;
+            tries++;
+          } while (
+            tries < 40 &&
+            placed.some(([px, py]) => Math.hypot(px - x, py - y) < 14)
+          );
+          placed.push([x, y]);
+
+          const svg = document.createElementNS(ns, "svg");
+          svg.setAttribute("viewBox", "0 0 100 90");
+          svg.style.left = x + "%";
+          svg.style.top = y + "%";
+          // each diamond gets its own tilt
+          svg.style.transform = "rotate(" + (Math.random() * 90 - 45) + "deg)";
+          GEM_FACETS.forEach(([fill, points]) => {
+            const polygon = document.createElementNS(ns, "polygon");
+            polygon.setAttribute("points", points);
+            polygon.setAttribute("fill", fill);
+            svg.appendChild(polygon);
+          });
+          const sparkle = document.createElementNS(ns, "polygon");
+          sparkle.setAttribute("points", SPARKLE_POINTS);
+          sparkle.setAttribute("fill", "white");
+          sparkle.style.display = "none";
+          svg.appendChild(sparkle);
+          sparkles.push(sparkle);
+          layer.appendChild(svg);
+        }
+
+        // every once in a while, one diamond glints
+        setInterval(() => {
+          const sparkle = sparkles[Math.floor(Math.random() * sparkles.length)];
+          const spot =
+            SPARKLE_SPOTS[Math.floor(Math.random() * SPARKLE_SPOTS.length)];
+          sparkle.setAttribute(
+            "transform",
+            "translate(" + spot[0] + " " + spot[1] + ")"
+          );
+          sparkle.style.display = "";
+          setTimeout(() => {
+            sparkle.style.display = "none";
+          }, 450);
+        }, 1400);
       }
 
       window.onload = function () {
-        calibrateFontSizes();
+        startGems();
+        swashify(document.getElementById("title"));
+        swashify(document.getElementById("toggleLabel"));
         loadSheetsApi();
-        applyRandomFontToTitle();
-        applyRandomFontToLabels();
-        const selector = document.getElementById("sheetSelector");
-        applyRandomFontToDropdown(selector);
         window.addEventListener("resize", adjustRowHeight);
         adjustRowHeight();
-
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(function () {
-            calibrateFontSizes();
-          });
-        }
       };
     </script>
   </body>
