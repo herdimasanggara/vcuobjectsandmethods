@@ -19,20 +19,22 @@
       rel="stylesheet"
     />
     <style>
-      /* bevel colours and thickness: change these to restyle it everywhere.
-         Four shades, lit from the top left, so the mitred corners read as raised. */
       :root {
         --bevel-top: #f9c4f9;
         --bevel-left: violet;
         --bevel-right: mediumorchid;
         --bevel-bottom: darkorchid;
         --bevel-size: 6px;
-        /* one text size for the header, controls and rows; follows the window */
+        --gem: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cpolygon fill=%22%23000%22 points=%22100.0,50.0 90.5,79.4 77.6,59.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,59.0 90.5,79.4 67.0,73.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2290.5,79.4 65.5,97.6 67.0,73.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2267.0,73.5 65.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2265.5,97.6 34.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2250.0,79.0 34.5,97.6 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2234.5,97.6 9.5,79.4 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2233.0,73.5 9.5,79.4 22.4,59.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%229.5,79.4 0.0,50.0 22.4,59.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2222.4,59.0 0.0,50.0 22.4,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%220.0,50.0 9.5,20.6 22.4,41.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2222.4,41.0 9.5,20.6 33.0,26.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%229.5,20.6 34.5,2.4 33.0,26.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2233.0,26.5 34.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2234.5,2.4 65.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2250.0,21.0 65.5,2.4 67.0,26.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2265.5,2.4 90.5,20.6 67.0,26.5%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2267.0,26.5 90.5,20.6 77.6,41.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2290.5,20.6 100.0,50.0 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,41.0 100.0,50.0 77.6,59.0%22/%3E%3Cpolygon fill=%22%23151515%22 points=%2277.6,59.0 67.0,73.5 50.0,79.0 33.0,73.5 22.4,59.0 22.4,41.0 33.0,26.5 50.0,21.0 67.0,26.5 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2222.4,41.0 33.0,26.5 42.7,44.7%22/%3E%3C/svg%3E");
+        --sparkle: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22-24 -24 48 48%22%3E%3Cpolygon fill=%22%23fff%22 points=%220,-22 4,-4 22,0 4,4 0,22 -4,4 -22,0 -4,-4%22/%3E%3C/svg%3E");
+        --bolt: clamp(11px, 1.35vw, 17px);
+        --sheen-size: 240px;
+        --bolt-a: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%2210%22 fill=%22%239a9a9a%22/%3E%3Cpath d=%22M2.93,17.07 A10,10 0 0 1 17.07,2.93 Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M17.07,2.93 A10,10 0 0 1 2.93,17.07 Z%22 fill=%22%236a6a6a%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%228.2%22 fill=%22%23e2e2e2%22/%3E%3Cpath d=%22M10,3.4 Q11.1,8.9 16.6,10 Q11.1,11.1 10,16.6 Q8.9,11.1 3.4,10 Q8.9,8.9 10,3.4 Z%22 fill=%22%23111%22/%3E%3C/svg%3E");
+        --bolt-b: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 20 20%22%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%2210%22 fill=%22%239a9a9a%22/%3E%3Cpath d=%22M2.93,17.07 A10,10 0 0 1 17.07,2.93 Z%22 fill=%22%23fff%22/%3E%3Cpath d=%22M17.07,2.93 A10,10 0 0 1 2.93,17.07 Z%22 fill=%22%236a6a6a%22/%3E%3Ccircle cx=%2210%22 cy=%2210%22 r=%228.2%22 fill=%22%23e2e2e2%22/%3E%3Cpath d=%22M10,3.4 Q11.1,8.9 16.6,10 Q11.1,11.1 10,16.6 Q8.9,11.1 3.4,10 Q8.9,8.9 10,3.4 Z%22 fill=%22%23111%22/%3E%3C/svg%3E");
+        --sheen: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 240 240%22%3E%3Cg transform=%22rotate%2845%29%22%3E%3Crect x=%22-499.12%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-481.12%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-471.12%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-405.12%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-399.12%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-387.12%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-329.41%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-311.41%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-301.41%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-235.41%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-229.41%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-217.41%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-159.71%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-141.71%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-131.71%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22-65.71%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-59.71%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22-47.71%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%2210.00%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%2228.00%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%2238.00%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22104.00%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22110.00%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22122.00%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22179.71%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22197.71%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22207.71%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22273.71%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22279.71%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22291.71%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22349.41%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22367.41%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22377.41%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22443.41%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22449.41%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22461.41%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22519.12%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22537.12%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22547.12%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22613.12%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22619.12%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22631.12%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22688.82%22 y=%22-600%22 width=%2218%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22706.82%22 y=%22-600%22 width=%2210%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.065%22/%3E%3Crect x=%22716.82%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.065%22/%3E%3Crect x=%22782.82%22 y=%22-600%22 width=%226%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3Crect x=%22788.82%22 y=%22-600%22 width=%2212%22 height=%221200%22 fill=%22%23ba55d3%22 fill-opacity=%220.055%22/%3E%3Crect x=%22800.82%22 y=%22-600%22 width=%225%22 height=%221200%22 fill=%22%232e9e4f%22 fill-opacity=%220.055%22/%3E%3C/g%3E%3C/svg%3E");
         --fs: clamp(15px, min(2.8vw, 4.8vh), 44px);
-        /* 16 rows on screen only leave room for a smaller size */
         --fs-dense: clamp(12px, min(1.8vw, 2.4vh), 26px);
         --header-h: clamp(76px, 12.5vh, 110px);
-        /* dropdown and toggle height follows the text size */
         --ctl: calc(var(--fs) * 1.3 + var(--bevel-size) * 2 + 6px);
         --link: darkorchid;
       }
@@ -43,9 +45,7 @@
         font-family: "Princess Sofia", "Times New Roman", Times, serif;
         font-size: var(--fs);
         line-height: 1.25;
-        /* stroke for weight, so the text reads bigger; scales with the text */
         -webkit-text-stroke: 0.032em currentColor;
-        /* manual tracking: a little air so the stroked letters don't touch */
         letter-spacing: 0.02em;
         word-spacing: 0.08em;
         font-kerning: normal;
@@ -58,6 +58,7 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        background-color: black;
       }
 
       .tabs {
@@ -90,8 +91,17 @@
         height: var(--ctl);
         line-height: 1.3;
         margin: 0;
-        padding: 0 0.7em;
-        border-radius: 999px;
+        padding: 0 calc(0.3em + var(--bolt) + 5px);
+        background-image: var(--bolt-a), var(--bolt-b), var(--sheen);
+        background-repeat: no-repeat, no-repeat, repeat;
+        background-position:
+          left 5px center,
+          right 5px center,
+          left top;
+        background-size:
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--sheen-size) var(--sheen-size);
         text-align: center;
         text-align-last: center;
         outline: none;
@@ -128,6 +138,8 @@
       .checkbox {
         -webkit-appearance: none;
         appearance: none;
+        background-image: var(--sheen);
+        background-size: var(--sheen-size) var(--sheen-size);
         box-sizing: border-box;
         flex-shrink: 0;
         width: calc(var(--ctl) * 1.7);
@@ -156,9 +168,7 @@
         left: 4px;
         width: var(--knob);
         height: var(--knob);
-        /* the knob is a round-cut gem seen from above: a decagon of flat
-           black, grey and white facets */
-        background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Cpolygon fill=%22%23000%22 points=%22100.0,50.0 90.5,79.4 77.6,59.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,59.0 90.5,79.4 67.0,73.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2290.5,79.4 65.5,97.6 67.0,73.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2267.0,73.5 65.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2265.5,97.6 34.5,97.6 50.0,79.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2250.0,79.0 34.5,97.6 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2234.5,97.6 9.5,79.4 33.0,73.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2233.0,73.5 9.5,79.4 22.4,59.0%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%229.5,79.4 0.0,50.0 22.4,59.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2222.4,59.0 0.0,50.0 22.4,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%220.0,50.0 9.5,20.6 22.4,41.0%22/%3E%3Cpolygon fill=%22%23000%22 points=%2222.4,41.0 9.5,20.6 33.0,26.5%22/%3E%3Cpolygon fill=%22%23fff%22 points=%229.5,20.6 34.5,2.4 33.0,26.5%22/%3E%3Cpolygon fill=%22%23000%22 points=%2233.0,26.5 34.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2234.5,2.4 65.5,2.4 50.0,21.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2250.0,21.0 65.5,2.4 67.0,26.5%22/%3E%3Cpolygon fill=%22%236e6e6e%22 points=%2265.5,2.4 90.5,20.6 67.0,26.5%22/%3E%3Cpolygon fill=%22%23b9b9b9%22 points=%2267.0,26.5 90.5,20.6 77.6,41.0%22/%3E%3Cpolygon fill=%22%232b2b2b%22 points=%2290.5,20.6 100.0,50.0 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2277.6,41.0 100.0,50.0 77.6,59.0%22/%3E%3Cpolygon fill=%22%23151515%22 points=%2277.6,59.0 67.0,73.5 50.0,79.0 33.0,73.5 22.4,59.0 22.4,41.0 33.0,26.5 50.0,21.0 67.0,26.5 77.6,41.0%22/%3E%3Cpolygon fill=%22%23fff%22 points=%2222.4,41.0 33.0,26.5 42.7,44.7%22/%3E%3C/svg%3E") center / contain no-repeat;
+        background: var(--gem) center / contain no-repeat;
         transition: transform 0.2s ease;
       }
 
@@ -179,7 +189,6 @@
         flex-direction: column;
         flex-grow: 1;
         height: calc(100% - var(--header-h));
-        /* black mortar between the bricks */
         background-color: black;
         gap: 2px;
       }
@@ -193,7 +202,6 @@
         padding-bottom: 0;
       }
 
-      /* desktop-only layout for the 16-row view */
       @media (min-width: 769px) {
         .tab-content .row {
           font-size: var(--fit, var(--fs));
@@ -203,16 +211,22 @@
           font-size: var(--fit, var(--fs-dense));
         }
 
-        /* 16 rows leave room for one line: give the title more width.
-           If a line is too long, fitRowText() shrinks the text; nothing is cut */
         .tab-content.dense .col4 {
-          flex: 4;
+          flex: 3.2;
+        }
+
+        .tab-content.dense .col5 {
+          flex: 1.8;
+        }
+
+        .tab-content.dense .column:not(.has-image) {
+          padding-left: calc(var(--bolt) + 14px);
+          padding-right: calc(var(--bolt) + 14px);
         }
 
         .tab-content.dense .column > div {
           max-width: 100%;
           white-space: nowrap;
-          /* room above and below so descenders (g, y, p) aren't clipped */
           padding: 0.1em 0;
         }
 
@@ -225,7 +239,6 @@
 
       .row {
         box-sizing: border-box;
-        /* black mortar between the cells; each cell is its own brick */
         background-color: black;
         gap: 2px;
         display: flex;
@@ -233,6 +246,7 @@
         justify-content: space-around;
         flex-grow: 1;
         min-height: 0;
+        line-height: 1.1;
       }
 
       .column,
@@ -251,8 +265,6 @@
         min-width: 0;
       }
 
-      /* text is never clipped: it may spill past its cell, and sits above
-         every cell background so a neighbour can't cover it */
       .column > div {
         position: relative;
         z-index: 1;
@@ -274,8 +286,6 @@
         flex: 1;
       }
 
-      /* exaggerated capitals: bigger than the text around them, without
-         pushing the lines apart */
       .swash {
         font-size: 1.45em;
         line-height: 0;
@@ -284,18 +294,14 @@
 
       .title-container .amp {
         color: violet;
-        /* exaggerated like the capitals, without pushing the line taller */
         font-size: 1.6em;
         line-height: 0;
-        /* hand-kerned so the space on each side looks equal */
         margin-left: -0.1em;
         margin-right: 0.06em;
-        /* dropped so its middle lines up with the middle of the two words */
         position: relative;
         top: 0.19em;
       }
 
-      /* headroom so the taller capitals on a cell's first line aren't cut */
       .column > div {
         padding: 0.24em 0;
       }
@@ -304,17 +310,40 @@
         font-size: 1.22em;
       }
 
-      /* text cells are rounded to go with the curvy type; poster cells stay square */
       .column:not(.has-image) {
         border-radius: 16px;
+        background-image: var(--bolt-a), var(--bolt-b), var(--bolt-b),
+          var(--bolt-a), var(--sheen);
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+        background-position:
+          left 5px top 5px,
+          right 5px top 5px,
+          left 5px bottom 5px,
+          right 5px bottom 5px,
+          left top;
+        background-size:
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--sheen-size) var(--sheen-size);
       }
 
       .tab-content.dense .column:not(.has-image) {
         border-radius: 12px;
+        --bolt: clamp(8px, 1.05vw, 14px);
+        background-image: var(--bolt-a), var(--bolt-b), var(--sheen);
+        background-repeat: no-repeat, no-repeat, repeat;
+        background-position:
+          left 5px center,
+          right 5px center,
+          left top;
+        background-size:
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--sheen-size) var(--sheen-size);
       }
 
-      /* a cell holding a poster shrinks to wrap it; its width is set in
-         sizeImageCells() from the poster's proportions */
       .column.has-image {
         overflow: hidden;
         flex: 0 0 auto;
@@ -328,8 +357,6 @@
         max-width: none;
         max-height: none;
       }
-
-
 
       .col4 {
         flex: 3;
@@ -363,7 +390,6 @@
         pointer-events: none;
       }
 
-      /* enlarged poster: bevelled like the cells; sized in showPreview() */
       #imgPreview {
         display: block;
         box-sizing: content-box;
@@ -432,7 +458,14 @@
           padding: 10px;
         }
 
-        /* rows grow to fit their text instead of clipping it */
+        .column:not(.has-image),
+        .tab-content.dense .column:not(.has-image) {
+          background-image: var(--sheen);
+          background-repeat: repeat;
+          background-position: left top;
+          background-size: var(--sheen-size) var(--sheen-size);
+        }
+
         .tab-content {
           flex: none;
           height: auto;
@@ -446,7 +479,7 @@
           min-height: 64px;
           overflow: visible;
           font-size: var(--fs);
-          line-height: 1.2;
+          line-height: 1.1;
         }
 
         .row .column {
@@ -455,7 +488,6 @@
 
       }
 
-      /* decorative gems: scattered over the page, never clickable */
       #gems {
         position: fixed;
         top: 0;
@@ -464,7 +496,6 @@
         height: 100%;
         overflow: hidden;
         pointer-events: none;
-        /* above the cell colours and posters, below all text and controls */
         z-index: 0;
       }
 
@@ -477,9 +508,131 @@
         position: absolute;
         display: block;
         overflow: visible;
-        /* matched to the toggle's gem knob (a touch wider, since a diamond
-           tapers to a point and reads smaller at the same width) */
         width: calc((var(--ctl) - var(--bevel-size) * 2 - 8px) * 1.2);
+      }
+
+      .title-container .amp {
+        cursor: pointer;
+      }
+
+      .title-container .amp::before,
+      .title-container .amp::after {
+        content: "";
+        position: absolute;
+        width: 0.4em;
+        height: 0.4em;
+        background: var(--sparkle) center / contain no-repeat;
+        visibility: hidden;
+        pointer-events: none;
+        animation: sparkle 2.3s steps(1) infinite;
+      }
+
+      .title-container .amp::before {
+        left: -0.24em;
+        top: 0.72em;
+      }
+
+      .title-container .amp::after {
+        right: -0.22em;
+        top: -0.02em;
+        width: 0.3em;
+        height: 0.3em;
+        animation-duration: 3.1s;
+        animation-delay: 1.1s;
+      }
+
+      #about {
+        display: none;
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 3;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        padding: calc(var(--bolt) + 24px);
+        pointer-events: none;
+        border: var(--bevel-size) solid;
+        border-color: var(--bevel-top) var(--bevel-right) var(--bevel-bottom) var(--bevel-left);
+        border-radius: 16px;
+        background-color: palegreen;
+        background-image: var(--bolt-a), var(--bolt-b), var(--bolt-b),
+          var(--bolt-a), var(--sheen);
+        background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+        background-position:
+          left 8px top 8px,
+          right 8px top 8px,
+          left 8px bottom 8px,
+          right 8px bottom 8px,
+          left top;
+        background-size:
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--bolt) var(--bolt),
+          var(--sheen-size) var(--sheen-size);
+      }
+
+      #about.open {
+        display: flex;
+      }
+
+      body.about-open #gems {
+        z-index: 4;
+      }
+
+      #aboutCopy {
+        display: none;
+        position: fixed;
+        top: var(--header-h);
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 5;
+        box-sizing: border-box;
+        align-items: center;
+        justify-content: center;
+        padding: calc(var(--bolt) + 30px);
+        pointer-events: none;
+      }
+
+      body.about-open #aboutCopy {
+        display: flex;
+      }
+
+      @media (min-width: 769px) {
+        .title-container,
+        .toggle-container {
+          z-index: 5;
+        }
+      }
+
+      #aboutCopy p {
+        margin: 0;
+        max-width: 26em;
+        text-align: center;
+        line-height: 1.22;
+        color: black;
+      }
+
+      @media (max-width: 768px) {
+        #about {
+          top: 0;
+          pointer-events: auto;
+          overflow-y: auto;
+          padding: 24px;
+          background-image: var(--sheen);
+          background-repeat: repeat;
+          background-position: left top;
+          background-size: var(--sheen-size) var(--sheen-size);
+        }
+
+        #aboutCopy {
+          top: 0;
+          padding: 30px;
+        }
       }
 
       .loading-screen {
@@ -496,13 +649,51 @@
       }
 
       .spinner {
-        box-sizing: border-box;
-        width: 56px;
-        height: 56px;
-        border: 6px solid #333;
-        border-top-color: palegreen;
-        border-radius: 50%;
-        animation: spin 0.9s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+        position: relative;
+        width: 76px;
+        height: 76px;
+      }
+
+      .spinner-gem {
+        width: 100%;
+        height: 100%;
+        background: var(--gem) center / contain no-repeat;
+        animation: spin 1.4s steps(10) infinite;
+      }
+
+      .spinner-sparkle {
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        background: var(--sparkle) center / contain no-repeat;
+        visibility: hidden;
+        animation: sparkle 1.9s steps(1) infinite;
+      }
+
+      .spinner-sparkle.one {
+        top: -10px;
+        left: -8px;
+      }
+
+      .spinner-sparkle.two {
+        right: -12px;
+        bottom: 2px;
+        width: 24px;
+        height: 24px;
+        animation-duration: 2.7s;
+        animation-delay: 0.8s;
+      }
+
+      @keyframes sparkle {
+        0% {
+          visibility: hidden;
+        }
+        62% {
+          visibility: visible;
+        }
+        80% {
+          visibility: hidden;
+        }
       }
 
       @keyframes spin {
@@ -535,7 +726,11 @@
   </head>
   <body>
     <div id="loadingScreen" class="loading-screen">
-      <div class="spinner"></div>
+      <div class="spinner">
+        <div class="spinner-gem"></div>
+        <span class="spinner-sparkle one"></span>
+        <span class="spinner-sparkle two"></span>
+      </div>
     </div>
     <div class="tabs">
       <div class="dropdown-container">
@@ -554,7 +749,7 @@
       
       </div>
       <div class="title-container">
-        <span id="title">Objects <span class="amp">&amp;</span> Methods</span>
+        <span id="title">Objects <span class="amp" id="aboutTrigger" role="button" tabindex="0" aria-controls="about" aria-expanded="false">&amp;</span> Methods</span>
       </div>
       <div class="toggle-container" onclick="toggleRows()">
         <span id="toggleLabel" class="toggle-label">without Dialogues</span>
@@ -563,6 +758,16 @@
     </div>
     <div id="tab1" class="tab-content"></div>
     <div id="gems" aria-hidden="true"></div>
+    <div id="about"></div>
+    <div id="aboutCopy" role="note">
+      <p id="aboutText">
+        Objects &amp; Methods is a public lecture series hosted by the Virginia
+        Commonwealth University School of the Arts (VCUarts). The series
+        explores contemporary art and design practices, with a particular
+        interest in how visual culture is produced and how practitioners
+        experiment with different methods of inquiry.
+      </p>
+    </div>
     <div id="previewContainer" class="preview-container">
       <img id="imgPreview" class="preview" />
       <div id="imgCaption" class="caption"></div>
@@ -728,8 +933,6 @@
         imgCaption.innerHTML = caption || "";
         swashify(imgCaption);
         imgCaption.style.display = caption ? "block" : "none";
-        // size the poster to fill up to 70% of the window, keeping its shape,
-        // so the bevel wraps the picture exactly
         const fit = () => {
           if (!imgPreview.naturalWidth) return;
           const scale = Math.min(
@@ -749,17 +952,11 @@
         document.getElementById("previewContainer").style.display = "none";
       }
 
-      // "Thursday, September 16" -> "Sep 16". Only text is touched, never
-      // tags or link addresses. Used on the narrow columns, not the title column.
       const LONG_NAMES =
         /\b(January|February|March|April|June|July|August|September|October|November|December)\b/g;
-      // weekdays are dropped: full names always, short ones ("Thu", "Thurs.")
-      // only when a date follows, so a word like "Sun" elsewhere is left alone
       const WEEKDAYS =
         /\b(Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day\b[.,]?\s*|\b(Mon|Tues?|Wed|Thu(rs?)?|Fri|Sat|Sun)\b[.,]?\s*(?=(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec|\d))/g;
 
-      // "12:30 pm ET" -> "12:30": drop the time zone, and drop am/pm after a
-      // time that has minutes. A bare hour such as "6 pm" keeps its am/pm.
       const TIME_ZONE = /\s*\(?\b(ET|EST|EDT)\b\)?/g;
       const AM_PM = /(\d{1,2}:\d{2})\s*[ap]\.?m\.?/gi;
 
@@ -772,15 +969,10 @@
             .replace(LONG_NAMES, (word) => word.slice(0, 3))
             .replace(TIME_ZONE, "")
             .replace(AM_PM, "$1")
-            // hand-kern the colon in times: a hair of space on each side
             .replace(/(\d):(\d)/g, "$1\u200A:\u200A$2");
         }
       }
 
-      // Princess Sofia has no built-in swash alternates, so the flourish is
-      // exaggerated by hand: the capital that starts each word is set larger
-      // (see .swash in the stylesheet). All-caps words such as "ICA" are left
-      // alone. Only text is touched, never tags.
       function swashify(element) {
         const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
         const nodes = [];
@@ -805,13 +997,10 @@
         });
       }
 
-      // Row text starts at the stylesheet size. If any cell's text is taller
-      // than its cell, shrink all row text together until everything fits, so
-      // nothing is ever cut off and every cell keeps the same size.
       function fitRowText() {
         const tab = document.getElementById("tab1");
         tab.style.removeProperty("--fit");
-        if (window.innerWidth <= 768) return; // phone rows grow instead
+        if (window.innerWidth <= 768) return;
         const row = tab.querySelector(".row");
         if (!row) return;
         let size = parseFloat(getComputedStyle(row).fontSize);
@@ -832,7 +1021,6 @@
         }
       }
 
-      // make each poster cell exactly as wide as its poster at the row's height
       function sizeImageCells() {
         document.querySelectorAll(".column.has-image").forEach((cell) => {
           const img = cell.querySelector("img");
@@ -853,7 +1041,6 @@
           const divRow = document.createElement("div");
           divRow.className = "row";
           divRow.style.setProperty("--row-color", bgColors[index] || "#ffffff");
-          // the Sheets API drops trailing empty cells, so pad every row to 5
           const cells = [];
           for (let c = 0; c < 5; c++) {
             cells.push(row[c] === undefined || row[c] === null ? "" : String(row[c]));
@@ -863,7 +1050,6 @@
             divCol.className = "column col" + (colIndex + 1);
             const lower = value.trim().toLowerCase();
 
-            // an empty cell in the sheet is left out; its neighbours fill the space
             if (value.trim() === "") return;
 
             if (
@@ -880,7 +1066,6 @@
               divCol.classList.add("has-image");
               divCol.appendChild(img);
             } else {
-              // wrap in one block so text and links flow together on a line
               const inner = document.createElement("div");
               inner.innerHTML = value;
               if (colIndex !== 3) shortenDates(inner);
@@ -889,7 +1074,6 @@
             }
             divRow.appendChild(divCol);
           });
-          // a row with nothing in it is left out too
           if (divRow.children.length) tabContent.appendChild(divRow);
         });
       }
@@ -912,12 +1096,7 @@
         fetchAllData();
       }
 
-      // ---- gems -----------------------------------------------------------
-      // A fixed scatter of identical diamonds, placed at random once when the
-      // page loads. They stay put, ignore the mouse, and every so often one
-      // shows a white sparkle for a moment (shown and hidden instantly).
       const GEM_COUNT = 9;
-      // facets mix the page's purples and greens
       const GEM_FACETS = [
         ["violet", "0,30 25,0 33,30"],
         ["#e3ffe3", "25,0 50,0 33,30"],
@@ -928,15 +1107,35 @@
         ["mediumorchid", "33,30 67,30 50,90"],
         ["darkorchid", "67,30 100,30 50,90"],
       ];
-      // four-point star, centred on 0,0
       const SPARKLE_POINTS = "0,-22 4,-4 22,0 4,4 0,22 -4,4 -22,0 -4,-4";
-      // spots on the diamond where a sparkle can land
       const SPARKLE_SPOTS = [
         [28, 12],
         [62, 14],
         [82, 28],
         [45, 48],
       ];
+
+      function keepGemsOffTitle() {
+        const title = document.getElementById("title").getBoundingClientRect();
+        const gap = 12;
+        const touches = (svg) => {
+          const r = svg.getBoundingClientRect();
+          return (
+            r.right > title.left - gap &&
+            r.left < title.right + gap &&
+            r.bottom > title.top - gap &&
+            r.top < title.bottom + gap
+          );
+        };
+        document.querySelectorAll("#gems svg").forEach((svg) => {
+          let tries = 0;
+          while (touches(svg) && tries < 60) {
+            svg.style.left = 3 + Math.random() * 90 + "%";
+            svg.style.top = 3 + Math.random() * 88 + "%";
+            tries++;
+          }
+        });
+      }
 
       function startGems() {
         const layer = document.getElementById("gems");
@@ -945,7 +1144,6 @@
         const sparkles = [];
 
         for (let i = 0; i < GEM_COUNT; i++) {
-          // pick a spot that isn't on top of another diamond
           let x, y, tries = 0;
           do {
             x = 3 + Math.random() * 90;
@@ -961,7 +1159,6 @@
           svg.setAttribute("viewBox", "0 0 100 90");
           svg.style.left = x + "%";
           svg.style.top = y + "%";
-          // each diamond gets its own tilt
           svg.style.transform = "rotate(" + (Math.random() * 90 - 45) + "deg)";
           GEM_FACETS.forEach(([fill, points]) => {
             const polygon = document.createElementNS(ns, "polygon");
@@ -978,7 +1175,12 @@
           layer.appendChild(svg);
         }
 
-        // every once in a while, one diamond glints
+        keepGemsOffTitle();
+        window.addEventListener("resize", keepGemsOffTitle);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(keepGemsOffTitle);
+        }
+
         setInterval(() => {
           const sparkle = sparkles[Math.floor(Math.random() * sparkles.length)];
           const spot =
@@ -994,9 +1196,46 @@
         }, 1400);
       }
 
+      function setupAbout() {
+        const trigger = document.getElementById("aboutTrigger");
+        const about = document.getElementById("about");
+        swashify(document.getElementById("aboutText"));
+        let lastPointer = "mouse";
+        const show = (open) => {
+          about.classList.toggle("open", open);
+          document.body.classList.toggle("about-open", open);
+          trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        };
+        trigger.addEventListener("pointerenter", (event) => {
+          lastPointer = event.pointerType;
+          if (event.pointerType === "mouse") show(true);
+        });
+        trigger.addEventListener("pointerleave", (event) => {
+          if (event.pointerType === "mouse") show(false);
+        });
+        trigger.addEventListener("pointerdown", (event) => {
+          lastPointer = event.pointerType;
+        });
+        trigger.addEventListener("click", () => {
+          if (lastPointer !== "mouse") show(!about.classList.contains("open"));
+        });
+        trigger.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            show(!about.classList.contains("open"));
+          } else if (event.key === "Escape") {
+            show(false);
+          }
+        });
+        trigger.addEventListener("blur", () => show(false));
+        about.addEventListener("click", () => show(false));
+      }
+
       window.onload = function () {
+        setupAbout();
         startGems();
         swashify(document.getElementById("title"));
+        keepGemsOffTitle();
         swashify(document.getElementById("toggleLabel"));
         loadSheetsApi();
         window.addEventListener("resize", adjustRowHeight);
