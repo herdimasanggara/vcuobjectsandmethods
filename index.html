@@ -2,7 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#000000" />
     <meta property="og:title" content="Objects + Methods" />
     <meta
       property="og:description"
@@ -51,10 +55,15 @@
         font-kerning: normal;
       }
 
+      html {
+        background-color: black;
+      }
+
       body {
         margin: 0;
         padding: 0;
         height: 100vh;
+        height: 100dvh;
         display: flex;
         flex-direction: column;
         overflow: hidden;
@@ -425,8 +434,13 @@
         }
 
         body {
-          overflow-y: scroll;
-          overflow-x: none;
+          height: auto;
+          min-height: 100vh;
+          min-height: 100dvh;
+          overflow-x: hidden;
+          overflow-y: visible;
+          box-sizing: border-box;
+          padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
         }
 
         .title-container {
@@ -632,6 +646,7 @@
         #aboutCopy {
           top: 0;
           padding: 30px;
+          padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 30px);
         }
       }
 
